@@ -1,0 +1,4254 @@
+<!DOCTYPE html>
+<!-- saved from url=(0082)https://research.googleblog.com/2015/06/inceptionism-going-deeper-into-neural.html -->
+<html class="v2 detail-page" dir="ltr" itemscope="" itemtype="http://schema.org/Blog" lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:b="http://www.google.com/2005/gml/b" xmlns:data="http://www.google.com/2005/gml/data" xmlns:expr="http://www.google.com/2005/gml/expr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>
+Research Blog: Inceptionism: Going Deeper into Neural Networks
+</title>
+<meta content="width=device-width, height=device-height, minimum-scale=1.0, initial-scale=1.0, user-scalable=0" name="viewport">
+<meta content="IE=Edge" http-equiv="X-UA-Compatible">
+<meta content="article" property="og:type">
+<meta content="Inceptionism: Going Deeper into Neural Networks" property="og:title">
+<meta content="http://1.bp.blogspot.com/-5bPNsF5plzw/VnJWs-7RbrI/AAAAAAAARmA/DaZmn8YUjAk/s1600-r/logo_research_at_google_color_1x_web_512dp.png" property="og:image">
+<meta content="en_US" property="og:locale">
+<meta content="https://research.googleblog.com/2015/06/inceptionism-going-deeper-into-neural.html" property="og:url">
+<meta content="Research Blog" property="og:site_name">
+<!-- Twitter Card properties -->
+<meta content="Research Blog" property="twitter:site">
+<meta content="Inceptionism: Going Deeper into Neural Networks" property="twitter:title">
+<meta content="https://4.bp.blogspot.com/-tTYZpdJ18bg/VYITAO4s_uI/AAAAAAAAAlE/L7VMImFFt_M/s72-c/noise-to-banana.png" property="twitter:image">
+<meta content="summary" name="twitter:card">
+<meta content="@googleresearch" name="twitter:creator">
+<link href="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/css" rel="stylesheet" type="text/css">
+<link href="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/icon" rel="stylesheet">
+<script src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/cb=gapi.loaded_2" async=""></script><script src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/cb=gapi.loaded_1" async=""></script><script src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/cb=gapi.loaded_0" async=""></script><script type="text/javascript" async="" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/ga.js"></script><script src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/jquery.min.js" type="text/javascript"></script>
+<!-- End -->
+<link type="text/css" rel="stylesheet" href="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/178992763-css_bundle_v2.css">
+<link type="text/css" rel="stylesheet" href="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/authorization.css">
+<style id="page-skin-1" type="text/css"><!--
+/*
+<Group description="Header Color" selector="header">
+<Variable name="header.background.color" description="Header Background"
+type="color" default="#ffffff"/>
+</Group>
+*/
+.header-outer {
+border-bottom: 1px solid #e0e0e0;
+background: #ffffff;
+}
+html, .Label h2, #sidebar .rss a, .BlogArchive h2, .FollowByEmail h2.title, .widget .post h2 {
+font-family: Roboto, sans-serif;
+}
+.plusfollowers h2.title, .post h2.title, .widget h2.title {
+font-family: Roboto, sans-serif;
+}
+.widget-item-control {
+height: 100%;
+}
+.widget.Header, #header {
+position: relative;
+height: 100%;
+width: 100%;
+}
+}
+.widget.Header .header-logo1 {
+float: left;
+margin-right: 15px;
+padding-right: 15px;
+border-right: 1px solid #ddd;
+}
+.header-title h1 {
+color: rgba(0,0,0,.54);
+display: inline-block;
+font-size: 40px;
+font-family: Roboto, sans-serif;
+font-weight: normal;
+line-height: 48px;
+vertical-align: top;
+}
+.header-inner {
+background-repeat: no-repeat;
+background-position: right 0px;
+}
+.post-author,
+.byline-author {
+font-size: 14px;
+font-weight: normal;
+color: #757575;
+color: rgba(0,0,0,.54);
+}
+.post-content .img-border {
+border: 1px solid rgb(235, 235, 235);
+padding: 4px;
+}
+.header-title a {
+text-decoration: none !important;
+}
+pre {
+border: 1px solid #bbbbbb;
+margin-top: 1em 0 0 0;
+padding: 0.99em;
+overflow-x: auto;
+overflow-y: auto;
+}
+pre, code {
+font-size: 9pt;
+background-color: #fafafa;
+line-height: 125%;
+font-family: monospace;
+}
+pre, code {
+color: #060;
+font: 13px/1.54 "courier new",courier,monospace;
+}
+.header-left .header-logo1 {
+width: 128px !important;
+}
+.header-desc {
+line-height: 20px;
+margin-top: 8px;
+}
+.fb-custom img, .twitter-custom img, .gplus-share img {
+cursor: pointer;
+opacity: 0.54;
+}
+.fb-custom img:hover, .twitter-custom img:hover, .gplus-share img:hover {
+opacity: 0.87;
+}
+.fb-like {
+width: 80px;
+}
+.post .share {
+float: right;
+}
+#twitter-share{
+border: #CCC solid 1px;
+border-radius: 3px;
+background-image: -webkit-linear-gradient(top,#ffffff,#dedede);
+}
+.twitter-follow {
+background: url(//4.bp.blogspot.com/-8O7VcmcY32o/VSYkC2vUj7I/AAAAAAAAHeU/7mzo-JFgTgk/s1600/twitter-bird.png) no-repeat left center;
+padding-left: 18px;
+font: normal normal normal 11px/18px 'Helvetica Neue',Arial,sans-serif;
+font-weight: bold;
+text-shadow: 0 1px 0 rgba(255,255,255,.5);
+cursor: pointer;
+margin-bottom: 10px;
+}
+.twitter-fb {
+padding-top: 2px;
+}
+.fb-follow-button  {
+background: -webkit-linear-gradient(#4c69ba, #3b55a0);
+background: -moz-linear-gradient(#4c69ba, #3b55a0);
+background: linear-gradient(#4c69ba, #3b55a0);
+border-radius: 2px;
+height: 18px;
+padding: 4px 0 0 3px;
+width: 57px;
+border: #4c69ba solid 1px;
+}
+.fb-follow-button a {
+text-decoration: none !important;
+text-shadow: 0 -1px 0 #354c8c;
+text-align: center;
+white-space: nowrap;
+font-size: 11px;
+color: white;
+vertical-align: top;
+}
+.fb-follow-button a:visited {
+color: white;
+}
+.fb-follow {
+padding: 0px 5px 3px 0px;
+width: 14px;
+vertical-align: bottom;
+}
+.gplus-wrapper {
+margin-top: 3px;
+display: inline-block;
+vertical-align: top;
+}
+.twitter-custom, .gplus-share {
+margin-right: 12px;
+}
+.fb-follow-button{
+margin: 10px auto;
+}
+sub, sup {
+line-height: 0;
+}
+/** CUSTOM CODE **/
+
+--></style>
+<style id="template-skin-1" type="text/css"><!--
+.header-outer {
+clear: both;
+}
+.header-inner {
+margin: auto;
+padding: 0px;
+}
+.footer-outer {
+background: #f5f5f5;
+clear: both;
+margin: 0;
+}
+.footer-inner {
+margin: auto;
+padding: 0px;
+}
+.footer-inner-2 {
+/* Account for right hand column elasticity. */
+max-width: calc(100% - 248px);
+}
+.google-footer-outer {
+clear: both;
+}
+.cols-wrapper, .google-footer-outer, .footer-inner, .header-inner {
+max-width: 978px;
+margin-left: auto;
+margin-right: auto;
+}
+.cols-wrapper {
+margin: auto;
+clear: both;
+margin-top: 60px;
+margin-bottom: 60px;
+overflow: hidden;
+}
+.col-main-wrapper {
+float: left;
+width: 100%;
+}
+.col-main {
+margin-right: 278px;
+max-width: 660px;
+}
+.col-right {
+float: right;
+width: 248px;
+margin-left: -278px;
+}
+/* Tweaks for layout mode. */
+body#layout .google-footer-outer {
+display: none;
+}
+body#layout .header-outer, body#layout .footer-outer {
+background: none;
+}
+body#layout .header-inner {
+height: initial;
+}
+body#layout .cols-wrapper {
+margin-top: initial;
+margin-bottom: initial;
+}
+--></style>
+<!-- start all head -->
+
+<meta content="blogger" name="generator">
+<link href="https://research.googleblog.com/favicon.ico" rel="icon" type="image/x-icon">
+<link href="https://research.googleblog.com/2015/06/inceptionism-going-deeper-into-neural.html" rel="canonical">
+<link rel="alternate" type="application/atom+xml" title="Research Blog - Atom" href="https://research.googleblog.com/feeds/posts/default">
+<link rel="alternate" type="application/rss+xml" title="Research Blog - RSS" href="https://research.googleblog.com/feeds/posts/default?alt=rss">
+<link rel="service.post" type="application/atom+xml" title="Research Blog - Atom" href="https://www.blogger.com/feeds/21224994/posts/default">
+
+<link rel="alternate" type="application/atom+xml" title="Research Blog - Atom" href="https://research.googleblog.com/feeds/5675413448691562451/comments/default">
+<!--[if IE]><script type="text/javascript" src="https://www.blogger.com/static/v1/jsbin/3032875878-ieretrofit.js"></script>
+<![endif]-->
+<link href="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/noise-to-banana.png" rel="image_src">
+<meta content="https://research.googleblog.com/2015/06/inceptionism-going-deeper-into-neural.html" property="og:url">
+<meta content="Inceptionism: Going Deeper into Neural Networks" property="og:title">
+<meta content="Posted by Alexander Mordvintsev, Software Engineer, Christopher Olah, Software Engineering Intern and Mike Tyka, Software Engineer   Update ..." property="og:description">
+<meta content="https://4.bp.blogspot.com/-tTYZpdJ18bg/VYITAO4s_uI/AAAAAAAAAlE/L7VMImFFt_M/w1200-h630-p-k-nu/noise-to-banana.png" property="og:image">
+<!--[if IE]> <script> (function() { var html5 = ("abbr,article,aside,audio,canvas,datalist,details," + "figure,footer,header,hgroup,mark,menu,meter,nav,output," + "progress,section,time,video").split(','); for (var i = 0; i < html5.length; i++) { document.createElement(html5[i]); } try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {} })(); </script> <![endif]-->
+<!-- end all head -->
+<!--<base target="_self">--><base href="." target="_self">
+<style>
+      html {
+        font-family: Roboto, sans-serif;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+      }
+      body {
+        padding: 0;
+        /* This ensures that the scroll bar is always present, which is needed */
+        /* because content render happens after page load; otherwise the header */
+        /* would "bounce" in-between states. */
+        min-height: 150%;
+      }
+      h2 {
+        font-size: 16px;
+      }
+      h1, h2, h3, h4, h5 {
+        line-height: 2em;
+      }
+      html, h4, h5, h6 {
+        font-size: 14px;
+      }
+      a, a:visited {
+        color: #4184F3;
+        text-decoration: none;
+      }
+      a:focus, a:hover, a:active {
+        text-decoration: none;
+      }
+      .Header {
+        margin-top: 15px;
+      }
+      /*.Header h1 {
+        font-size: 32px;
+        font-weight: 300;
+        line-height: 32px;
+        height: 42px;
+      }*/
+      .header-inner .Header .titlewrapper {
+        padding: 0;
+        margin-top: 30px;
+      }
+      .header-inner .Header .descriptionwrapper {
+        padding: 0;
+        margin: 0;
+      }
+      .cols-wrapper {
+        margin-top: 56px;
+      }
+      .header-outer, .cols-wrapper, .footer-outer, .google-footer-outer {
+        padding: 0 60px;
+      }
+      .header-inner {
+        height: 256px;
+        position: relative;
+      }
+      html, .header-inner a {
+        color: #212121;
+        color: rgba(0,0,0,.87);
+      }
+      .header-inner .google-logo {
+        display: inline-block;
+        background-size: contain;
+        z-index: 1;
+        height: 100px;
+        overflow: hidden;
+        margin-top: -23px;
+        margin-right: 8px;
+      }
+      .header-left {
+        position: absolute;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+        margin-top: 12px;
+        width: 100%;
+      }
+      .google-logo {
+        margin-left: -4px;
+      }
+      #google-footer {
+        position: relative;
+        font-size: 13px;
+        list-style: none;
+        text-align: right;
+      }
+      #google-footer a {
+        color: #444;
+      }
+      #google-footer ul {
+        margin: 0;
+        padding: 0;
+        height: 144px;
+        line-height: 144px;
+      }
+      #google-footer ul li {
+        display: inline;
+      }
+      #google-footer ul li:before {
+        color: #999;
+        content: "\00b7";
+        font-weight: bold;
+        margin: 5px;
+      }
+      #google-footer ul li:first-child:before {
+        content: '';
+      }
+      #google-footer .google-logo-dark {
+        left: 0;
+        margin-top: -16px;
+        position: absolute;
+        top: 50%;
+      }
+      /** Sitemap links. **/
+      .footer-inner-2 {
+        font-size: 14px;
+        padding-top: 42px;
+        padding-bottom: 74px;
+      }
+      .footer-inner-2 .HTML h2 {
+        color: #212121;
+        color: rgba(0,0,0,.87);
+        font-size: 14px;
+        font-weight: 500;
+        padding-left: 0;
+        margin: 10px 0;
+      }
+      .footer-inner-2 .HTML ul {
+        font-weight: normal;
+        list-style: none;
+        padding-left: 0;
+      }
+      .footer-inner-2 .HTML li {
+        line-height: 24px;
+        padding: 0;
+      }
+      .footer-inner-2 li a {
+        color: rgba(65,132,243,.87);
+      }
+      /** Archive widget. **/
+      .BlogArchive {
+        font-size: 13px;
+        font-weight: normal;
+      }
+      .BlogArchive .widget-content {
+        display: none;
+      }
+      .BlogArchive h2, .Label h2 {
+        color: #4184F3;
+        text-decoration: none;
+      }
+      .BlogArchive .hierarchy li {
+        display: inline-block;
+      }
+      /* Specificity needed here to override widget CSS defaults. */
+      .BlogArchive #ArchiveList ul li, .BlogArchive #ArchiveList ul ul li {
+        margin: 0;
+        padding-left: 0;
+        text-indent: 0;
+      }
+      .BlogArchive .intervalToggle {
+        cursor: pointer;
+      }
+      .BlogArchive .expanded .intervalToggle .new-toggle {
+        -ms-transform: rotate(180deg);
+        transform: rotate(180deg);
+      }
+      .BlogArchive .new-toggle {
+        float: right;
+        padding-top: 3px;
+        opacity: 0.87;
+      }
+      #ArchiveList {
+        text-transform: uppercase;
+      }
+      #ArchiveList .expanded > ul:last-child {
+        margin-bottom: 16px;
+      }
+      #ArchiveList .archivedate {
+        width: 100%;
+      }
+      /* Months */
+      .BlogArchive .items {
+        max-width: 150px;
+        margin-left: -4px;
+      }
+      .BlogArchive .expanded .items {
+        margin-bottom: 10px;
+        overflow: hidden;
+      }
+      .BlogArchive .items > ul {
+        float: left;
+        height: 32px;
+      }
+      .BlogArchive .items a {
+        padding: 0 4px;
+      }
+      .Label {
+        font-size: 13px;
+        font-weight: normal;
+      }
+      .sidebar-icon {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        vertical-align: middle;
+        margin-right: 12px;
+        margin-top: -1px
+      }
+      .Label a {
+        margin-right: 4px;
+      }
+      .Label .widget-content {
+        display: none;
+      }
+      .FollowByEmail {
+        font-size: 13px;
+        font-weight: normal;
+      }
+      .FollowByEmail h2 {
+        background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAALCAYAAACZIGYHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAUBJREFUeNrMkSGLAlEUhb+ZB4JFi8mx2cz+ApvhRUGTcUCrNqNJDYIi+DO0GUwmQXDK2DSIoGgZcSaIjDrzwrK4ssvChj1w0733O+fdp+m6PozH4yQSCfb7Pa7r8pOi0SjJZBLP8zgej4gAIMvlMuPxmADIYrHger1+C6lUKmo+NJ/NZojb7SZDWiwWo1qtks1msW2bw+HwZdkwDHq9HvV6nel0SqvVYrvdIh6Ph3Qch+VyqRYLhQJSSjRNw7IsfN9XgGKxSLfbJZfL0e/3aTabrFYr7vc7IujLcOh8PqunrNdr0uk0pVKJVCpFJBJRgEajweVyod1uMxgM2O12BAGUgRbU8DV2JpOhVquRz+cRQii3+XxOp9NRN3jVR5LPOp1OjEYjlSL8hclkgmmabDabt4d+m+S30vkD/R/IU4ABAPTZgnZdmG/PAAAAAElFTkSuQmCC");
+        background-repeat: no-repeat;
+        background-position: 0 50%;
+        text-indent: 30px;
+      }
+      .FollowByEmail .widget-content {
+        display: none;
+      }
+      .searchBox input {
+        border: 1px solid #eee;
+        color: #212121;
+        color: rgba(0,0,0,.87);
+        font-size: 14px;
+        padding: 8px 8px 8px 40px;
+        width: 164px;
+        font-family: Roboto, sans-serif;
+        background: url("https://www.gstatic.com/images/icons/material/system/1x/search_grey600_24dp.png") 8px center no-repeat;
+      }
+      .searchBox ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+        color:    rgba(0,0,0,.54);
+      }
+      .searchBox :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color:    #000;
+        opacity:  0.54;
+      }
+      .searchBox ::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color:    #000;
+        opacity:  0.54;
+      }
+      .searchBox :-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color:    #757575;
+      }
+      .widget-item-control {
+        margin-top: 0px;
+      }
+      .section {
+        margin: 0;
+        padding: 0;
+      }
+      #sidebar-top {
+        border: 1px solid #eee;
+      }
+      #sidebar-top > div {
+        margin: 16px 0;
+      }
+      .widget ul {
+        line-height: 1.6;
+      }
+      /*main post*/
+      .post {
+        margin-bottom:30px;
+      }
+      #main .post .title {
+        margin: 0;
+      }
+      #main .post .title a {
+        color: #212121;
+        color: rgba(0,0,0,.87);
+        font-weight: normal;
+        font-size: 24px;
+      }
+      #main .post .title a:hover {
+        text-decoration:none;
+        color:#4184F3;
+      }
+      .message,  #main .post .post-header {
+        margin: 0;
+        padding: 0;
+      }
+      #main .post .post-header .caption, #main .post .post-header .labels-caption,  #main .post .post-footer .caption, #main .post .post-footer .labels-caption {
+        color: #444;
+        font-weight: 500;
+      }
+      #main .tr-caption-container td {
+        text-align: center;
+      }
+      #main .post .tr-caption {
+        color: #757575;
+        color: rgba(0,0,0,.54);
+        display: block;
+        padding-bottom: 20px;
+		line-height: 1.5;
+      }
+      #main .post .tr-caption-container {
+        line-height: 24px;
+        padding: 4px 0;
+        text-align: center;
+      }
+      #main .post .post-header .published{
+        font-size:11px;
+        font-weight:bold;
+      }
+      .post-header .publishdate {
+        font-size: 17px;
+        font-weight:normal;
+        color: #757575;
+        color: rgba(0,0,0,.54);
+      }
+      #main .post .post-footer{
+        font-size:12px;
+        padding-bottom: 21px;
+      }
+      .label-footer {
+        margin-bottom: 12px;
+        margin-top: 12px;
+      }
+      .comment-img {
+        margin-right: 16px;
+        opacity: 0.54;
+        vertical-align: middle;
+      }
+      #main .post .post-header .published {
+        margin-bottom: 10px;
+        margin-top: -2px;
+      }
+      .post .post-content {
+        color: #212121;
+        color: rgba(0,0,0,.87);
+        font-size: 15px;
+        margin: 5px 0 36px 0;
+        line-height: 20px;
+      }
+      .post-body .post-content ul, .post-body .post-content ol {
+        margin: 16px 0;
+        padding: 0 48px;
+      }
+      .post-summary {
+        display: none;
+      }
+      /* Another old-style caption. */
+      .post-content div i, .post-content div + i {
+        font-size: 14px;
+        font-style: normal;
+        color: #757575;
+        color: rgba(0,0,0,.54);
+        display: block;
+        line-height: 24px;
+        margin-bottom: 16px;
+        text-align: left;
+      }
+      /* Another old-style caption (with link) */
+      .post-content a > i {
+        color: #4184F3 !important;
+      }
+      /* Old-style captions for images. */
+      .post-content .separator + div:not(.separator) {
+        margin-top: -16px;
+      }
+      /* Capture section headers. */
+      .post-content br + br + b, .post-content .space + .space + b, .post-content .separator + b {
+        display: inline-block;
+      }
+      /*.post-content li {
+        line-height: 1.5;
+      }*/
+      /* Override all post images/videos to left align. */
+      .post-content .separator, .post-content > div {
+        text-align: center;
+      }
+      .post-content .separator > a, .post-content .separator > span {
+        margin-left: 0 !important;
+      }
+      .post-content img {
+        max-width: 100%;
+        height: auto;
+        width: auto;
+      }
+      .post-content .tr-caption-container img {
+        margin-bottom: 12px;
+      }
+      .post-content iframe, .post-content embed {
+        max-width: 100%;
+      }
+      .post-content .carousel-container {
+        margin-bottom: 48px;
+      }
+      #main .post-content b {
+        font-weight: 500;
+      }
+      /* These are the main paragraph spacing tweaks. */
+      #main .post-content br {
+        /*content: ' ';*/
+        display: block;
+        padding: 4px;
+      }
+      .post-content .space {
+        display: block;
+        height: 8px;
+      }
+      .post-content iframe + .space, .post-content iframe + br {
+        padding: 0 !important;
+      }
+      #main .post .jump-link {
+        margin-bottom:10px;
+      }
+      .post-content img, .post-content iframe {
+        margin: 15px 0 20px 0;
+      }
+      .post-content > img:first-child, .post-content > iframe:first-child {
+        margin-top: 0;
+      }
+      .col-right .section {
+        padding: 0 16px;
+      }
+      #aside {
+        background:#fff;
+        border:1px solid #eee;
+        border-top: 0;
+      }
+      #aside .widget {
+        margin:0;
+      }
+      #aside .widget h2, #ArchiveList .toggle + a.post-count-link {
+        color: #212121;
+        color: rgba(0,0,0,.87);
+        font-weight: 400 !important;
+        margin: 0;
+      }
+      #ArchiveList .toggle {
+        float: right;
+      }
+      #ArchiveList .toggle .material-icons {
+        padding-top: 4px;
+      }
+      #sidebar .tab {
+        cursor: pointer;
+      }
+      #sidebar .tab .arrow {
+        display: inline-block;
+        float: right;
+      }
+      #sidebar .tab .icon {
+        display: inline-block;
+        vertical-align: top;
+        height: 24px;
+        width: 24px;
+        margin-right: 13px;
+        margin-left: -1px;
+        margin-top: 1px;
+        color: #757575;
+        color: rgba(0,0,0,.54);
+      }
+      #sidebar .widget-content > :first-child {
+        padding-top: 8px;
+      }
+      #sidebar .active .tab .arrow {
+        -ms-transform: rotate(180deg);
+        transform: rotate(180deg);
+      }
+      #sidebar .arrow {
+        color: #757575;
+        color: rgba(0,0,0,.54);
+      }
+      #sidebar .widget h2 {
+        font-size: 14px;
+        line-height: 24px;
+        display: inline-block;
+      }
+      #sidebar .widget .BlogArchive {
+        padding-bottom: 8px;
+      }
+      #sidebar .widget {
+        border-bottom: 1px solid #eee;
+        box-shadow: 0px 1px 0 white;
+        margin-bottom: 0;
+        padding: 14px 0;
+        min-height: 20px;
+      }
+      #sidebar .widget:last-child {
+        border-bottom: none;
+        box-shadow: none;
+        margin-bottom: 0;
+      }
+      #sidebar ul {
+        margin: 0;
+        padding: 0;
+      }
+      #sidebar ul li {
+        list-style:none;
+        padding:0;
+      }
+      #sidebar ul li a {
+        line-height: 32px;
+      }
+      #sidebar .archive {
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAYCAYAAADzoH0MAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAE1JREFUeNpiNDY23s9AAWBioBCwYBM8c+YMVsUmJibEGYBNMS5DaeMFfDYSZQA2v9I3FrB5AZeriI4FmnrBccCT8mhmGs1MwyAzAQQYAKEWG9zm9QFEAAAAAElFTkSuQmCC");
+        height: 24px;
+        line-height: 24px;
+        padding-left: 30px;
+      }
+      #sidebar .labels {
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAUxJREFUeNpiNDY23s9AAMycOfM7UF05kHkZmzwTMkdSUhKrIcXFxZy3bt3qBjIN8RrS09PDsHnzZjCNDr58+cKQlpbGDjSoHcg1w2oIyAUODg5gARCNzUVIBrUCuVYYhjx//pzhwIEDYAEQDeJjA1CDWIAGNQK59jBxRuSABbkAlwHIgIeHh2HWrFn/1NTU2oDcvSgBS4wBSC5iArqoCsj1YGIgEyAZVMoEchqlBjEB/cZAiUHg2AEGznpKDAImxOeM////B4VLKtBvEUCngZ1ILKivr3/u6+ubBzJAGZQ9gC5aQoqLgAY8BhkAZL4BuQQkxgXE34A4BuiiZEIuAhrwEGhAEZD5DpzYoIaA2UAM4kQADUrHZRDUgAIg8wO2XAwzbQXQa5OweQ1owB10AyA6gS7BgX1u3ry5397eHow3bdo0EyjGi00tQIABANPgyAH1q1eaAAAAAElFTkSuQmCC");
+        height: 20px;
+        line-height: 20px;
+        padding-left: 30px;
+      }
+      #sidebar .rss a {
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAX5JREFUeNqsVDGSgkAQHL2rIiIikohIc/EBRkbwAIwuwgfwAXiAD9AHSI7kEkECRCb6AIyINDLx7K0aa6kT7uq0q7YYtnZ7umdnt7darXbr9Zpegeu61DNNc0dvwCcH4/GYJpMJnc9nOhwOVJbl/4hAAokMECZJQtvt9k+kH7qufyEYDAakqqqYxFdRFBqNRmTbNg2HQ0rTlK7XayvR0xqBdDqdkuM4dE/0ULhYLOh4PHYrknG5XGi/31MYhuL/nkwonM1mlGUZ1XXdrsiyLGEDhY7juJEZ1u5tIixDGdYhmYw+B7CAzPP5nDabjdgIAgCksMX1832/3drtdqPT6SQWapomiGEFNkDEdpDMMAzK81ys/7XYy+XyoQgq2WoURSIJ2iIIgp/WZCCTvFm2wgeAU31aI3Q2GhIDMeB53qPYPIcm5VrxXIOIOxsDMStjVawAc1VViRgN22lNBiuQN3GR+SY07hpOoStmFQAKXRRFY93bnpG+fONfedi+BRgAbkS8Fxp7QQIAAAAASUVORK5CYII=");
+      }
+      #sidebar .subscription a {
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAALCAYAAACZIGYHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAUBJREFUeNrMkSGLAlEUhb+ZB4JFi8mx2cz+ApvhRUGTcUCrNqNJDYIi+DO0GUwmQXDK2DSIoGgZcSaIjDrzwrK4ssvChj1w0733O+fdp+m6PozH4yQSCfb7Pa7r8pOi0SjJZBLP8zgej4gAIMvlMuPxmADIYrHger1+C6lUKmo+NJ/NZojb7SZDWiwWo1qtks1msW2bw+HwZdkwDHq9HvV6nel0SqvVYrvdIh6Ph3Qch+VyqRYLhQJSSjRNw7IsfN9XgGKxSLfbJZfL0e/3aTabrFYr7vc7IujLcOh8PqunrNdr0uk0pVKJVCpFJBJRgEajweVyod1uMxgM2O12BAGUgRbU8DV2JpOhVquRz+cRQii3+XxOp9NRN3jVR5LPOp1OjEYjlSL8hclkgmmabDabt4d+m+S30vkD/R/IU4ABAPTZgnZdmG/PAAAAAElFTkSuQmCC");
+      }
+      #sidebar-bottom {
+        background: #f5f5f5;
+        border-top:1px solid #eee;
+      }
+      #sidebar-bottom .widget {
+        border-bottom: 1px solid #e0e0e0;
+        padding: 15px 0;
+        text-align: center;
+      }
+      #sidebar-bottom > div:last-child {
+        border-bottom: 0;
+      }
+      #sidebar-bottom .text {
+        line-height: 20px;
+      }
+      /* Home, forward, and backward pagination. */
+      .blog-pager {
+        border-top : 1px #e0e0e0 solid;
+        padding-top: 10px;
+        margin-top: 15px;
+        text-align: right !important;
+      }
+      #blog-pager {
+        margin-botom: 0;
+        margin-top: -14px;
+        padding: 16px 0 0 0;
+      }
+      #blog-pager a {
+        display: inline-block;
+      }
+      .blog-pager i.disabled {
+        opacity: 0.2 !important;
+      }
+      .blog-pager i {
+        color: black;
+        margin-left: 16px;
+        opacity: 0.54;
+      }
+      .blog-pager i:hover, .blog-pager i:active {
+        opacity: 0.87;
+      }
+      #blog-pager-older-link, #blog-pager-newer-link {
+        float: none;
+      }
+      .gplus-profile {
+        background-color: #fafafa;
+        border: 1px solid #eee;
+        overflow: hidden;
+        width: 212px;
+      }
+      .gplus-profile-inner {
+        margin-left: -1px;
+        margin-top: -1px;
+      }
+      /* Sidebar follow buttons. */
+      .followgooglewrapper {
+        padding: 12px 0 0 0;
+      }
+      .loading {
+        visibility: hidden;
+      }
+      .detail-page .post-footer .cmt_iframe_holder {
+        padding-top: 40px !important;
+      }
+      /** Desktop **/
+      @media (max-width: 900px) {
+        .col-right {
+          display: none;
+        }
+        .col-main {
+          margin-right: 0;
+          min-width: initial;
+        }
+        .footer-outer {
+          display: none;
+        }
+        .cols-wrapper {
+          min-width: initial;
+        }
+        .google-footer-outer {
+          background-color: #f5f5f5;
+        }
+      }
+      /** Tablet **/
+      @media (max-width: 712px) {
+        .header-outer, .cols-wrapper, .footer-outer, .google-footer-outer {
+          padding: 0 40px;
+        }
+      }
+      /* An extra breakpoint accommodating for long blog titles. */
+      @media (max-width: 600px) {
+        .header-left {
+          height: 100%;
+          top: inherit;
+          margin-top: 0;
+          -webkit-transform: initial;
+          transform: initial;
+        }
+        .header-title {
+          margin-top: 18px;
+        }
+        .header-inner .google-logo {
+          height: 40px;
+          margin-top: 3px;
+        }
+        .header-inner .google-logo img {
+          height: 42px;
+        }
+        .header-title h2 {
+          font-size: 32px;
+          line-height: 40px;
+        }
+        .header-desc {
+          bottom: 24px;
+          position: absolute;
+        }
+      }
+      /** Mobile/small desktop window; also landscape. **/
+      @media (max-width: 480px), (max-height: 480px) {
+        .header-outer, .cols-wrapper, .footer-outer, .google-footer-outer {
+          padding: 0 16px;
+        }
+        .cols-wrapper {
+          margin-top: 0;
+        }
+        .post-header .publishdate, .post .post-content {
+          font-size: 16px;
+        }
+        .post .post-content {
+          line-height: 28px;
+          margin-bottom: 30px;
+        }
+        .post {
+          margin-top: 30px;
+        }
+        .byline-author {
+          display: block;
+          font-size: 12px;
+          line-height: 24px;
+          margin-top: 6px;
+        }
+        #main .post .title a {
+          font-weight: 500;
+          color: #4c4c4c;
+          color: rgba(0,0,0,.70);
+        }
+        #main .post .post-header {
+          padding-bottom: 12px;
+        }
+        #main .post .post-header .published {
+          margin-bottom: -8px;
+          margin-top: 3px;
+        }
+        .post .read-more {
+          display: block;
+          margin-top: 14px;
+        }
+        .post .tr-caption {
+          font-size: 12px;
+        }
+        #main .post .title a {
+          font-size: 20px;
+          line-height: 30px;
+        }
+        .post-content iframe {
+          /* iframe won't keep aspect ratio when scaled down. */
+          max-height: 240px;
+        }
+        .post-content .separator img, .post-content .tr-caption-container img, .post-content iframe {
+          max-width: inherit;
+          width: calc(100% + 32px);
+        }
+        .post-content table, .post-content td {
+          width: 100%;
+        }
+        #blog-pager {
+          margin: 0;
+          padding: 16px 0;
+        }
+        /** List page tweaks. **/
+        .list-page .post-original {
+          display: none;
+        }
+        .list-page .post-summary {
+          display: block;
+        }
+        .list-page .comment-container {
+          display: none;
+        } 
+        .list-page #blog-pager {
+          padding-top: 0;
+          border: 0;
+          margin-top: -8px;
+        }
+        .list-page .label-footer {
+          display: none;
+        }
+        .list-page #main .post .post-footer {
+          border-bottom: 1px solid #eee;
+          margin: -16px 0 0 0;
+          padding: 0 0 20px 0;
+        }
+        .list-page .post .share {
+          display: none;
+        }
+        /** Detail page tweaks. **/
+        .detail-page .post-footer .cmt_iframe_holder {
+          padding-top: 32px !important;
+        }
+        .detail-page .label-footer {
+          margin-bottom: 0;
+        }
+        .detail-page #main .post .post-footer {
+          padding-bottom: 0;
+        }
+        .detail-page #comments {
+          display: none;
+        }
+      }
+      [data-about-pullquote], [data-is-preview], [data-about-syndication] {
+        display: none;
+      }
+    </style>
+<noscript>
+&lt;style&gt;
+        .loading { visibility: visible }&lt;/style&gt;
+</noscript>
+<script type="text/javascript">
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-3589841-1']);
+          _gaq.push(['_trackPageview']);
+          (function() {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = (document.location.protocol == 'https:' ?
+                      'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+          })();
+        </script>
+<style class="singleton-element" type="text/css">.cookie-choices-info { position:fixed;width:100%;background-color:#666;margin:0;left:0;top:0;padding:0;z-index:4000;text-align:center;color:#fff;line-height:140%;padding:10px 0;font-family:roboto,Arial; } .cookie-choices-info .cookie-choices-inner { position:relative;width:initial;margin:0;left:0;top:0; } .cookie-choices-info .cookie-choices-text { display:inline-block;vertical-align:middle;font-size:16px;margin:10px 20px;color:#ccc;max-width:800px;text-align:left; }.cookie-choices-info .cookie-choices-buttons { display:inline-block;vertical-align:middle;white-space:nowrap;margin:0 10px; } .cookie-choices-info .cookie-choices-button:hover {  color: #fff; } .cookie-choices-info .cookie-choices-button { font-weight:bold;text-transform:UPPERCASE;white-space:nowrap;color:#eee;margin-left:8px;padding:0 6px; text-decoration:none; }</style></head>
+<body>
+<script type="text/javascript">
+      //<![CDATA[
+      var axel = Math.random() + "";
+      var a = axel * 10000000000000;
+      document.write('<iframe src="https://2542116.fls.doubleclick.net/activityi;src=2542116;type=gblog;cat=googl0;ord=ord=' + a + '?" width="1" height="1" frameborder="0" style="display:none"></iframe>');
+      //]]>
+    </script><iframe src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/activityi.html" width="1" height="1" frameborder="0" style="display:none"></iframe>
+<noscript>
+&lt;img alt='' height='1' src='https://ad.doubleclick.net/ddm/activity/src=2542116;type=gblog;cat=googl0;ord=1?' width='1'/&gt;
+</noscript>
+<!-- Header -->
+<div class="header-outer">
+<div class="header-inner">
+<div class="section" id="header"><div class="widget Header" data-version="1" id="Header1">
+<div class="header-left">
+<div class="header-title">
+<a class="google-logo" href="https://research.googleblog.com/">
+<img height="100" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/logo_research_at_google_color_1x_web_512dp.png">
+</a>
+<a href="https://research.googleblog.com/">
+<h1>
+            Google Research Blog
+          </h1>
+</a>
+</div>
+<div class="header-desc">
+The latest news from Research at Google
+</div>
+</div>
+</div></div>
+</div>
+</div>
+<!-- all content wrapper start -->
+<div class="cols-wrapper">
+<div class="col-main-wrapper">
+<div class="col-main">
+<div class="section" id="main"><div class="widget Blog" data-version="1" id="Blog1">
+<div class="post" data-id="5675413448691562451" itemscope="" itemtype="http://schema.org/BlogPosting">
+<h2 class="title" itemprop="name">
+<a href="https://research.googleblog.com/2015/06/inceptionism-going-deeper-into-neural.html" itemprop="url" title="Inceptionism: Going Deeper into Neural Networks">
+Inceptionism: Going Deeper into Neural Networks
+</a>
+</h2>
+<div class="post-header">
+<div class="published">
+<span class="publishdate" itemprop="datePublished">
+Wednesday, June 17, 2015
+</span>
+</div>
+</div>
+<div class="post-body">
+<div class="post-content post-original" itemprop="articleBody">
+                          <span class="byline-author">Posted by Alexander Mordvintsev, Software Engineer, Christopher Olah, Software Engineering Intern and Mike Tyka, Software Engineer</span><br>
+<br>
+<span style="font-size: x-small;"><b>Update - 13/07/2015</b></span><br>
+<span style="font-size: x-small;"><i>Images in this blog post are licensed by Google Inc. under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. However, images based on places by <a href="http://places.csail.mit.edu/">MIT Computer Science and AI Laboratory</a> require additional permissions from MIT for use.</i></span><br>
+<br>
+<a href="http://en.wikipedia.org/wiki/Artificial_neural_network">Artificial Neural Networks</a> have spurred remarkable recent progress in <a href="http://googleresearch.blogspot.com/2014/09/building-deeper-understanding-of-images.html#uds-search-results">image classification</a> and <a href="https://www.youtube.com/watch?v=yxxRAHVtafI">speech recognition</a>. But even though these are very useful tools based on well-known mathematical methods, we actually understand surprisingly little of why certain models work and others don’t. So let’s take a look at some simple techniques for peeking inside these networks.<br>
+<br>
+We train an artificial neural network by showing it millions of training examples and <a href="https://en.wikipedia.org/?title=Backpropagation">gradually adjusting the network parameters</a> until it gives the classifications we want. The network typically consists of 10-30 stacked layers of artificial neurons. Each image is fed into the input layer, which then talks to the next layer, until eventually the “output” layer is reached. The network’s “answer” comes from this final output layer.<br>
+<br>
+One of the challenges of neural networks is understanding what exactly goes on at each layer. We know that after training, each layer progressively extracts higher and higher-level features of the image, until the final layer essentially makes a decision on what the image shows. For example, the first layer maybe looks for edges or corners. Intermediate layers interpret the basic features to look for overall shapes or components, like a door or a leaf. The final few layers assemble those into complete interpretations—these neurons activate in response to very complex things such as entire buildings or trees. <br>
+<br>
+One way to visualize what goes on is to turn the network upside down and ask it to enhance an input image in such a way as to elicit a particular interpretation. Say you want to know what sort of image would result in “Banana.” Start with an image full of random noise, then gradually tweak the image towards what the neural net considers a banana (see related work in <a href="http://arxiv.org/pdf/1412.1897v4.pdf">[1]</a>, <a href="http://arxiv.org/pdf/1412.0035v1.pdf">[2]</a>, <a href="http://arxiv.org/pdf/1506.02753.pdf">[3]</a>, <a href="http://arxiv.org/pdf/1312.6034v2.pdf">[4]</a>). By itself, that doesn’t work very well, but it does if we impose a prior constraint that the image should have similar statistics to natural images, such as neighboring pixels needing to be correlated. <br>
+<div class="separator" style="clear: both; text-align: center;">
+<a href="https://4.bp.blogspot.com/-tTYZpdJ18bg/VYITAO4s_uI/AAAAAAAAAlE/L7VMImFFt_M/s1600/noise-to-banana.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;" target="_blank"><img border="0" height="257" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/noise-to-banana.png" width="640"></a></div>
+So here’s one surprise: neural networks that were trained to discriminate between different kinds of images have quite a bit of the information needed to <i>generate</i> images too. Check out some more examples across different classes:<br>
+<div class="separator" style="clear: both; text-align: center;">
+<a href="https://2.bp.blogspot.com/-17ajatawCW4/VYITTA1NkDI/AAAAAAAAAlM/eZmy5_Uu9TQ/s1600/classvis.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;" target="_blank"><img border="0" height="374" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/classvis.png" width="640"></a></div>
+Why is this important? Well, we train networks by simply showing them many examples of what we want them to learn, hoping they extract the essence of the matter at hand (e.g., a fork needs a handle and 2-4 tines), and learn to ignore what doesn’t matter (a fork can be any shape, size, color or orientation). But how do you check that the network has correctly learned the right features? It can help to visualize the network’s representation of a fork.<br>
+<br>
+Indeed, in some cases, this reveals that the neural net isn’t quite looking for the thing we thought it was. For example, here’s what one neural net we designed thought dumbbells looked like:<br>
+<div class="separator" style="clear: both; text-align: center;">
+<a href="https://3.bp.blogspot.com/-dc6B2h_o1fc/VYITir_QCgI/AAAAAAAAAlU/Ysi0_reQTpI/s1600/dumbbells.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;" target="_blank"><img border="0" height="154" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/dumbbells.png" width="640"></a></div>
+There are dumbbells in there alright, but it seems no picture of a dumbbell is complete without a muscular weightlifter there to lift them. In this case, the network failed to completely distill the essence of a dumbbell. Maybe it’s never been shown a dumbbell without an arm holding it. Visualization can help us correct these kinds of training mishaps.<br>
+<br>
+Instead of exactly prescribing which feature we want the network to amplify, we can also let the network make that decision. In this case we simply feed the network an arbitrary image or photo and let the network analyze the picture. We then pick a layer and ask the network to enhance whatever it detected. Each layer of the network deals with features at a different level of abstraction, so the complexity of features we generate depends on which layer we choose to enhance. For example, lower layers tend to produce strokes or simple ornament-like patterns, because those layers are sensitive to basic features such as edges and their orientations.<br>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td style="text-align: center;"><a href="https://3.bp.blogspot.com/-4Uj3hPFupok/VYIT6s_c9OI/AAAAAAAAAlc/_yGdbbsmGiw/s1600/ibis.png" imageanchor="1" style="margin-left: auto; margin-right: auto;" target="_blank"><img border="0" height="214" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/ibis.png" width="640"></a></td></tr>
+<tr><td class="tr-caption" style="text-align: center;"><i>Left: Original photo by <a href="https://www.flickr.com/photos/zachievenor/8258092492/in/set-72157630014410078">Zachi Evenor</a>. Right: processed by Günther Noack, Software Engineer</i></td></tr>
+</tbody></table>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td style="text-align: center;"><a href="https://4.bp.blogspot.com/-PK_bEYY91cw/VYIVBYw63uI/AAAAAAAAAlo/iUsA4leua10/s1600/seurat-layout.png" imageanchor="1" style="margin-left: auto; margin-right: auto;" target="_blank"><img border="0" height="282" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/seurat-layout.png" width="640"></a></td></tr>
+<tr><td class="tr-caption" style="text-align: center;"><i>Left: Original painting by G<a href="https://en.wikipedia.org/wiki/A_Sunday_Afternoon_on_the_Island_of_La_Grande_Jatte#/media/File:Georges_Seurat_-_A_Sunday_on_La_Grande_Jatte_--_1884_-_Google_Art_Project.jpg">eorges Seurat</a>. Right:  processed images by Matthew McNaughton, Software Engineer</i></td></tr>
+</tbody></table>
+If we choose higher-level layers, which identify more sophisticated features in images, complex features or even whole objects tend to emerge. Again, we just start with an existing image and give it to our neural net. We ask the network: “Whatever you see there, I want more of it!” This creates a feedback loop: if a cloud looks a little bit like a bird, the network will make it look more like a bird. This in turn will make the network recognize the bird even more strongly on the next pass and so forth, until a highly detailed bird appears, seemingly out of nowhere.<br>
+<div class="separator" style="clear: both; text-align: center;">
+<a href="https://4.bp.blogspot.com/-FPDgxlc-WPU/VYIV1bK50HI/AAAAAAAAAlw/YIwOPjoulcs/s1600/skyarrow.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;" target="_blank"><img border="0" height="170" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/skyarrow.png" width="640"></a></div>
+The results are intriguing—even a relatively simple neural network can be used to over-interpret an image, just like as children we enjoyed watching clouds and interpreting the random shapes. This network was trained mostly on images of animals, so naturally it tends to interpret shapes as animals. But because the data is stored at such a high abstraction, the results are an interesting remix of these learned features.<br>
+<div class="separator" style="clear: both; text-align: center;">
+<a href="https://3.bp.blogspot.com/-R15_fyB-ZpE/VYIV-Uu9iwI/AAAAAAAAAl4/o3heQNGpVRU/s1600/Funny-Animals.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;" target="_blank"><img border="0" height="170" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/Funny-Animals.png" width="640"></a></div>
+Of course, we can do more than cloud watching with this technique. We can apply it to any kind of image. The results vary quite a bit with the kind of image, because the features that are entered bias the network towards certain interpretations. For example, horizon lines tend to get filled with towers and pagodas. Rocks and trees turn into buildings. Birds and insects appear in images of leaves.<br>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td style="text-align: center;"><a href="https://2.bp.blogspot.com/-nxPKPYA8otk/VYIWRcpjZfI/AAAAAAAAAmE/8dSuxLnSNQ4/s1600/image-dream-map.png" imageanchor="1" style="margin-left: auto; margin-right: auto;" target="_blank"><img border="0" height="534" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/image-dream-map.png" width="640"></a></td></tr>
+<tr><td class="tr-caption" style="text-align: center;"><i>The original image influences what kind of objects form in the processed image.</i></td></tr>
+</tbody></table>
+This technique gives us a qualitative sense of the level of abstraction that a particular layer has achieved in its understanding of images. We call this technique “Inceptionism” in reference to the <a href="http://arxiv.org/pdf/1409.4842.pdf">neural net architecture</a> used. See our <a href="https://goo.gl/photos/fFcivHZ2CDhqCkZdA">Inceptionism gallery</a> for more pairs of images and their processed results, plus some cool video animations.<br>
+<br>
+<b>We must go deeper: Iterations </b><br>
+<br>
+If we apply the algorithm iteratively on its own outputs and apply some zooming after each iteration, we get an endless stream of new impressions, exploring the set of things the network knows about. We can even start this process from a random-noise image, so that the result becomes purely the result of the neural network, as seen in the following images:<br>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td style="text-align: center;"><a href="https://1.bp.blogspot.com/-XZ0i0zXOhQk/VYIXdyIL9kI/AAAAAAAAAmQ/UbA6j41w28o/s1600/building-dreams.png" imageanchor="1" style="margin-left: auto; margin-right: auto;" target="_blank"><img border="0" height="300" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/building-dreams.png" width="640"></a></td></tr>
+<tr><td class="tr-caption" style="text-align: center;"><i>Neural net “dreams”— generated purely from random noise, using a network trained on places by <a href="http://places.csail.mit.edu/">MIT Computer Science and AI Laboratory</a>. See our <a href="https://goo.gl/photos/fFcivHZ2CDhqCkZdA">Inceptionism gallery</a>&nbsp;for hi-res versions of the images above and more (Images marked “Places205-GoogLeNet” were made using this network).</i></td></tr>
+</tbody></table>
+The techniques presented here help us understand and visualize how neural networks are able to carry out difficult classification tasks, improve network architecture, and check what the network has learned during training. It also makes us wonder whether neural networks could become a tool for artists—a new way to remix visual concepts—or perhaps even shed a little light on the roots of the creative process in general.
+<span itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person">
+  <meta content="https://plus.google.com/116899029375914044550" itemprop="url">
+</span>
+                        </div>
+</div>
+<div class="share">
+<span class="gplus-share social-wrapper" data-href="https://plus.google.com/share?url=https://research.googleblog.com/2015/06/inceptionism-going-deeper-into-neural.html">
+<img alt="Share on Google+" height="24" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/ic_w_post_gplus_black_24dp.png" width="24">
+</span>
+<span class="twitter-custom social-wrapper" data-href="http://twitter.com/share?text=Research Blog:Inceptionism: Going Deeper into Neural Networks&amp;url=https://research.googleblog.com/2015/06/inceptionism-going-deeper-into-neural.html&amp;via=googleresearch">
+<img alt="Share on Twitter" height="24" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/post_twitter_black_24dp.png" width="24">
+</span>
+<span class="fb-custom social-wrapper" data-href="https://www.facebook.com/sharer.php?u=https://research.googleblog.com/2015/06/inceptionism-going-deeper-into-neural.html">
+<img alt="Share on Facebook" height="24" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/post_facebook_black_24dp.png" width="24">
+</span>
+</div>
+<div class="post-footer">
+<div class="cmt_iframe_holder" data-href="https://research.googleblog.com/2015/06/inceptionism-going-deeper-into-neural.html" data-viewtype="FILTERED_POSTMOD" id="gpluscomments" style="text-indent: 0px; margin: 0px; padding: 0px; background: transparent; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; display: inline-block; width: 661px; height: 2524px;"><iframe ng-non-bindable="" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position: static; top: 0px; width: 660px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 2524px;" tabindex="0" vspace="0" width="100%" id="I0_1484737031313" name="I0_1484737031313" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/comments.html" data-gapiattached="true" title="Comment on this"></iframe></div>
+<a href="https://plus.google.com/112374322230920073195" rel="author" style="display:none;">
+                        Google
+                      </a>
+<div class="label-footer">
+<span class="labels-caption">
+Labels:
+</span>
+<span class="labels">
+<a class="label" href="https://research.googleblog.com/search/label/Computer%20Vision" rel="tag">
+Computer Vision
+</a>
+
+                                ,
+                              
+<a class="label" href="https://research.googleblog.com/search/label/Google%20Brain" rel="tag">
+Google Brain
+</a>
+
+                                ,
+                              
+<a class="label" href="https://research.googleblog.com/search/label/Image%20Classification" rel="tag">
+Image Classification
+</a>
+
+                                ,
+                              
+<a class="label" href="https://research.googleblog.com/search/label/Neural%20Networks" rel="tag">
+Neural Networks
+</a>
+</span>
+</div>
+</div>
+<script src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/plusone.js" type="text/javascript" gapi_processed="true"></script>
+<div class="cmt_iframe_holder" data-href="https://research.googleblog.com/2015/06/inceptionism-going-deeper-into-neural.html" data-viewtype=""></div>
+</div>
+<div class="blog-pager" id="blog-pager">
+<a class="home-link" href="https://research.googleblog.com/">
+<i class="material-icons">
+                      
+                    </i>
+</a>
+<span id="blog-pager-newer-link">
+<a class="blog-pager-newer-link" href="https://research.googleblog.com/2015/06/google-computational-journalism.html" id="Blog1_blog-pager-newer-link" title="Newer Post">
+<i class="material-icons">
+                          
+                        </i>
+</a>
+</span>
+<span id="blog-pager-older-link">
+<a class="blog-pager-older-link" href="https://research.googleblog.com/2015/06/new-ways-to-add-reminders-in-inbox-by.html" id="Blog1_blog-pager-older-link" title="Older Post">
+<i class="material-icons">
+                          
+                        </i>
+</a>
+</span>
+</div>
+<div class="clear"></div>
+</div></div>
+</div>
+</div>
+<div class="col-right">
+<div class="section" id="sidebar-top"><div class="widget HTML" data-version="1" id="HTML8">
+<div class="widget-content">
+<div class="searchBox">
+<input type="text" title="Search This Blog" placeholder="Search blog ...">
+</div>
+</div>
+<div class="clear"></div>
+<span class="widget-item-control">
+<span class="item-control blog-admin">
+<a class="quickedit" href="https://www.blogger.com/rearrange?blogID=21224994&amp;widgetType=HTML&amp;widgetId=HTML8&amp;action=editWidget&amp;sectionId=sidebar-top" onclick="return _WidgetManager._PopupConfig(document.getElementById(&quot;HTML8&quot;));" target="configHTML8" title="Edit">
+<img alt="" height="18" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/icon18_wrench_allbkg.png" width="18">
+</a>
+</span>
+</span>
+<div class="clear"></div>
+</div></div>
+<div id="aside">
+<div class="section" id="sidebar"><div class="widget Label" data-version="1" id="Label1">
+<div class="tab">
+<img class="sidebar-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAYpJREFUeNrs2aFuwzAQBmAvKRkMKRjZA4QMDJaWFgyMjuzFRg37DIUlA3uFkoGQSaWzJU+tpri5O9+l/zSfdFJlpe59yTmyVedq1PjfcZMZ70NuQnaF8w8htyE/rABtpviXkLcK88c5HhLkMBfgVan43zfFBNGMjHVGT/s55KP2pAvidbGHd+nzKt1RKSLG3rKF1iPFv6UWiPke8i7kEqGdGsI1O+LYVdqJAjgirwkKYD0ytkJBUNbAMvX8V3q9PhUsYvU1sWD8SO/sQvx2ahxOiNoJCSBCoAHYCEQAC4EKICOQASQEOmAS8RcAFxFN5hiIiugpgC3wk9hQAHH/70EBHXUN7IER5EWMiBgo2+nzOKQv9SCAeEM/OQAkhE/ncccFICB87qzQMia5FsJfOui0zMnmRvipU1ormHQuxGTxUsAcCFLxJQBLBLn4UoAFglW8BkATwS5eC6CBEBWvCShBiIvXBkgQRcVbADiI4uKtABSESvGWgB9EzHt3+tNwyO0qa9SoIYtvAQYAqDJhaWWeMecAAAAASUVORK5CYII=">
+<h2>
+Labels
+</h2>
+<i class="material-icons arrow">
+                      
+                    </i>
+</div>
+<div class="widget-content list-label-widget-content">
+<ul>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/accessibility">
+accessibility
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/ACL">
+ACL
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/ACM">
+ACM
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Acoustic%20Modeling">
+Acoustic Modeling
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Adaptive%20Data%20Analysis">
+Adaptive Data Analysis
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/ads">
+ads
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/adsense">
+adsense
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/adwords">
+adwords
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Africa">
+Africa
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/AI">
+AI
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Algorithms">
+Algorithms
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Android">
+Android
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/API">
+API
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/App%20Engine">
+App Engine
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/App%20Inventor">
+App Inventor
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/April%20Fools">
+April Fools
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Art">
+Art
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Audio">
+Audio
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Australia">
+Australia
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Automatic%20Speech%20Recognition">
+Automatic Speech Recognition
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Awards">
+Awards
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Cantonese">
+Cantonese
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/China">
+China
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Chrome">
+Chrome
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Cloud%20Computing">
+Cloud Computing
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Collaboration">
+Collaboration
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Computational%20Imaging">
+Computational Imaging
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Computational%20Photography">
+Computational Photography
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Computer%20Science">
+Computer Science
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Computer%20Vision">
+Computer Vision
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/conference">
+conference
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/conferences">
+conferences
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Conservation">
+Conservation
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/correlate">
+correlate
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Course%20Builder">
+Course Builder
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/crowd-sourcing">
+crowd-sourcing
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/CVPR">
+CVPR
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Data%20Center">
+Data Center
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/data%20science">
+data science
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/datasets">
+datasets
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Deep%20Learning">
+Deep Learning
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/DeepDream">
+DeepDream
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/DeepMind">
+DeepMind
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/distributed%20systems">
+distributed systems
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Diversity">
+Diversity
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Earth%20Engine">
+Earth Engine
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/economics">
+economics
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Education">
+Education
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Electronic%20Commerce%20and%20Algorithms">
+Electronic Commerce and Algorithms
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/electronics">
+electronics
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/EMEA">
+EMEA
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/EMNLP">
+EMNLP
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Encryption">
+Encryption
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/entities">
+entities
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Entity%20Salience">
+Entity Salience
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Environment">
+Environment
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Europe">
+Europe
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Exacycle">
+Exacycle
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Expander">
+Expander
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Faculty%20Institute">
+Faculty Institute
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Faculty%20Summit">
+Faculty Summit
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Flu%20Trends">
+Flu Trends
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Fusion%20Tables">
+Fusion Tables
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/gamification">
+gamification
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Gmail">
+Gmail
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Google%20Books">
+Google Books
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Google%20Brain">
+Google Brain
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Google%20Cloud%20Platform">
+Google Cloud Platform
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Google%20Docs">
+Google Docs
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Google%20Drive">
+Google Drive
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Google%20Genomics">
+Google Genomics
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Google%20Play%20Apps">
+Google Play Apps
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Google%20Science%20Fair">
+Google Science Fair
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Google%20Sheets">
+Google Sheets
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Google%20Translate">
+Google Translate
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Google%20Trips">
+Google Trips
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Google%20Voice%20Search">
+Google Voice Search
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Google%2B">
+Google+
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Government">
+Government
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/grants">
+grants
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Graph">
+Graph
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Hardware">
+Hardware
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/HCI">
+HCI
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Health">
+Health
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/High%20Dynamic%20Range%20Imaging">
+High Dynamic Range Imaging
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/ICLR">
+ICLR
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/ICML">
+ICML
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/ICSE">
+ICSE
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Image%20Annotation">
+Image Annotation
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Image%20Classification">
+Image Classification
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Image%20Processing">
+Image Processing
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Inbox">
+Inbox
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Information%20Retrieval">
+Information Retrieval
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/internationalization">
+internationalization
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Internet%20of%20Things">
+Internet of Things
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Interspeech">
+Interspeech
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/IPython">
+IPython
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Journalism">
+Journalism
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/jsm">
+jsm
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/jsm2011">
+jsm2011
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/K-12">
+K-12
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/KDD">
+KDD
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Klingon">
+Klingon
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Korean">
+Korean
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Labs">
+Labs
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Linear%20Optimization">
+Linear Optimization
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/localization">
+localization
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Machine%20Hearing">
+Machine Hearing
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Machine%20Intelligence">
+Machine Intelligence
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Machine%20Learning">
+Machine Learning
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Machine%20Perception">
+Machine Perception
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Machine%20Translation">
+Machine Translation
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/MapReduce">
+MapReduce
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/market%20algorithms">
+market algorithms
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Market%20Research">
+Market Research
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/ML">
+ML
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/MOOC">
+MOOC
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Multimodal%20Learning">
+Multimodal Learning
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/NAACL">
+NAACL
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Natural%20Language%20Processing">
+Natural Language Processing
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Natural%20Language%20Understanding">
+Natural Language Understanding
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Network%20Management">
+Network Management
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Networks">
+Networks
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Neural%20Networks">
+Neural Networks
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Ngram">
+Ngram
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/NIPS">
+NIPS
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/NLP">
+NLP
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/open%20source">
+open source
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/operating%20systems">
+operating systems
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Optical%20Character%20Recognition">
+Optical Character Recognition
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/optimization">
+optimization
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/osdi">
+osdi
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/osdi10">
+osdi10
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/patents">
+patents
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/ph.d.%20fellowship">
+ph.d. fellowship
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/PhD%20Fellowship">
+PhD Fellowship
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/PiLab">
+PiLab
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Policy">
+Policy
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Professional%20Development">
+Professional Development
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Proposals">
+Proposals
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Public%20Data%20Explorer">
+Public Data Explorer
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/publication">
+publication
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Publications">
+Publications
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Quantum%20Computing">
+Quantum Computing
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/renewable%20energy">
+renewable energy
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Research">
+Research
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Research%20Awards">
+Research Awards
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/resource%20optimization">
+resource optimization
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Robotics">
+Robotics
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/schema.org">
+schema.org
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Search">
+Search
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/search%20ads">
+search ads
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Security%20and%20Privacy">
+Security and Privacy
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Semi-supervised%20Learning">
+Semi-supervised Learning
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/SIGCOMM">
+SIGCOMM
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/SIGMOD">
+SIGMOD
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Site%20Reliability%20Engineering">
+Site Reliability Engineering
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Social%20Networks">
+Social Networks
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Software">
+Software
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Speech">
+Speech
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Speech%20Recognition">
+Speech Recognition
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/statistics">
+statistics
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Structured%20Data">
+Structured Data
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Style%20Transfer">
+Style Transfer
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Supervised%20Learning">
+Supervised Learning
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Systems">
+Systems
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/TensorFlow">
+TensorFlow
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Translate">
+Translate
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/trends">
+trends
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/TTS">
+TTS
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/TV">
+TV
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/UI">
+UI
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/University%20Relations">
+University Relations
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/UNIX">
+UNIX
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/User%20Experience">
+User Experience
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/video">
+video
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Video%20Analysis">
+Video Analysis
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Vision%20Research">
+Vision Research
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Visiting%20Faculty">
+Visiting Faculty
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Visualization">
+Visualization
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/VLDB">
+VLDB
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Voice%20Search">
+Voice Search
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/Wiki">
+Wiki
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/wikipedia">
+wikipedia
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/WWW">
+WWW
+</a>
+</li>
+<li>
+<a dir="ltr" href="https://research.googleblog.com/search/label/YouTube">
+YouTube
+</a>
+</li>
+</ul>
+<div class="clear"></div>
+<span class="widget-item-control">
+<span class="item-control blog-admin">
+<a class="quickedit" href="https://www.blogger.com/rearrange?blogID=21224994&amp;widgetType=Label&amp;widgetId=Label1&amp;action=editWidget&amp;sectionId=sidebar" onclick="return _WidgetManager._PopupConfig(document.getElementById(&quot;Label1&quot;));" target="configLabel1" title="Edit">
+<img alt="" height="18" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/icon18_wrench_allbkg.png" width="18">
+</a>
+</span>
+</span>
+<div class="clear"></div>
+</div>
+</div><div class="widget BlogArchive" data-version="1" id="BlogArchive1">
+<div class="tab">
+<i class="material-icons icon">
+                      
+                    </i>
+<h2>
+Archive
+</h2>
+<i class="material-icons arrow">
+                      
+                    </i>
+</div>
+<div class="widget-content">
+<div id="ArchiveList">
+<div id="BlogArchive1_ArchiveList">
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="intervalToggle">
+<span class="new-toggle" href="javascript:void(0)">
+<i class="material-icons arrow">
+                    
+                  </i>
+</span>
+<a class="toggle" href="javascript:void(0)" style="display: none">
+<span class="zippy">
+<i class="material-icons">
+                        
+                      </i>
+                      &nbsp;
+                    
+</span>
+</a>
+<a class="post-count-link" href="https://research.googleblog.com/search?updated-min=2017-01-01T00:00:00-08:00&amp;updated-max=2018-01-01T00:00:00-08:00&amp;max-results=2">
+2017
+</a>
+</div>
+<div class="items"><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2017_01_01_archive.html">
+Jan
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul>
+
+</div>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="intervalToggle">
+<span class="new-toggle" href="javascript:void(0)">
+<i class="material-icons arrow">
+                    
+                  </i>
+</span>
+<a class="toggle" href="javascript:void(0)" style="display: none">
+<span class="zippy">
+<i class="material-icons">
+                        
+                      </i>
+                      &nbsp;
+                    
+</span>
+</a>
+<a class="post-count-link" href="https://research.googleblog.com/search?updated-min=2016-01-01T00:00:00-08:00&amp;updated-max=2017-01-01T00:00:00-08:00&amp;max-results=50">
+2016
+</a>
+</div>
+<div class="items"><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2016_01_01_archive.html">
+Jan
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2016_02_01_archive.html">
+Feb
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2016_03_01_archive.html">
+Mar
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2016_04_01_archive.html">
+Apr
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2016_05_01_archive.html">
+May
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2016_06_01_archive.html">
+Jun
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2016_07_01_archive.html">
+Jul
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2016_08_01_archive.html">
+Aug
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2016_09_01_archive.html">
+Sep
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2016_10_01_archive.html">
+Oct
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2016_11_01_archive.html">
+Nov
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2016_12_01_archive.html">
+Dec
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate expanded">
+<div class="intervalToggle">
+<span class="new-toggle" href="javascript:void(0)">
+<i class="material-icons arrow">
+                    
+                  </i>
+</span>
+<a class="toggle" href="javascript:void(0)" style="display: none">
+<span class="zippy toggle-open">
+<i class="material-icons">
+                        
+                      </i>
+                      &nbsp;
+                      
+</span>
+</a>
+<a class="post-count-link" href="https://research.googleblog.com/search?updated-min=2015-01-01T00:00:00-08:00&amp;updated-max=2016-01-01T00:00:00-08:00&amp;max-results=50">
+2015
+</a>
+</div>
+<div class="items"><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2015_01_01_archive.html">
+Jan
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2015_02_01_archive.html">
+Feb
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2015_03_01_archive.html">
+Mar
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2015_04_01_archive.html">
+Apr
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2015_05_01_archive.html">
+May
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate expanded">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2015_06_01_archive.html">
+Jun
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2015_07_01_archive.html">
+Jul
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2015_08_01_archive.html">
+Aug
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2015_09_01_archive.html">
+Sep
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2015_10_01_archive.html">
+Oct
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2015_11_01_archive.html">
+Nov
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2015_12_01_archive.html">
+Dec
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="intervalToggle">
+<span class="new-toggle" href="javascript:void(0)">
+<i class="material-icons arrow">
+                    
+                  </i>
+</span>
+<a class="toggle" href="javascript:void(0)" style="display: none">
+<span class="zippy">
+<i class="material-icons">
+                        
+                      </i>
+                      &nbsp;
+                    
+</span>
+</a>
+<a class="post-count-link" href="https://research.googleblog.com/search?updated-min=2014-01-01T00:00:00-08:00&amp;updated-max=2015-01-01T00:00:00-08:00&amp;max-results=50">
+2014
+</a>
+</div>
+<div class="items"><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2014_01_01_archive.html">
+Jan
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2014_02_01_archive.html">
+Feb
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2014_03_01_archive.html">
+Mar
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2014_04_01_archive.html">
+Apr
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2014_05_01_archive.html">
+May
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2014_06_01_archive.html">
+Jun
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2014_07_01_archive.html">
+Jul
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2014_08_01_archive.html">
+Aug
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2014_09_01_archive.html">
+Sep
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2014_10_01_archive.html">
+Oct
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2014_11_01_archive.html">
+Nov
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2014_12_01_archive.html">
+Dec
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="intervalToggle">
+<span class="new-toggle" href="javascript:void(0)">
+<i class="material-icons arrow">
+                    
+                  </i>
+</span>
+<a class="toggle" href="javascript:void(0)" style="display: none">
+<span class="zippy">
+<i class="material-icons">
+                        
+                      </i>
+                      &nbsp;
+                    
+</span>
+</a>
+<a class="post-count-link" href="https://research.googleblog.com/search?updated-min=2013-01-01T00:00:00-08:00&amp;updated-max=2014-01-01T00:00:00-08:00&amp;max-results=50">
+2013
+</a>
+</div>
+<div class="items"><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2013_01_01_archive.html">
+Jan
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2013_02_01_archive.html">
+Feb
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2013_03_01_archive.html">
+Mar
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2013_04_01_archive.html">
+Apr
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2013_05_01_archive.html">
+May
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2013_06_01_archive.html">
+Jun
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2013_07_01_archive.html">
+Jul
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2013_08_01_archive.html">
+Aug
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2013_09_01_archive.html">
+Sep
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2013_10_01_archive.html">
+Oct
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2013_11_01_archive.html">
+Nov
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2013_12_01_archive.html">
+Dec
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="intervalToggle">
+<span class="new-toggle" href="javascript:void(0)">
+<i class="material-icons arrow">
+                    
+                  </i>
+</span>
+<a class="toggle" href="javascript:void(0)" style="display: none">
+<span class="zippy">
+<i class="material-icons">
+                        
+                      </i>
+                      &nbsp;
+                    
+</span>
+</a>
+<a class="post-count-link" href="https://research.googleblog.com/search?updated-min=2012-01-01T00:00:00-08:00&amp;updated-max=2013-01-01T00:00:00-08:00&amp;max-results=50">
+2012
+</a>
+</div>
+<div class="items"><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2012_01_01_archive.html">
+Jan
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2012_02_01_archive.html">
+Feb
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2012_03_01_archive.html">
+Mar
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2012_04_01_archive.html">
+Apr
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2012_05_01_archive.html">
+May
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2012_06_01_archive.html">
+Jun
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2012_07_01_archive.html">
+Jul
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2012_08_01_archive.html">
+Aug
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2012_09_01_archive.html">
+Sep
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2012_10_01_archive.html">
+Oct
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2012_12_01_archive.html">
+Dec
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+</div>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="intervalToggle">
+<span class="new-toggle" href="javascript:void(0)">
+<i class="material-icons arrow">
+                    
+                  </i>
+</span>
+<a class="toggle" href="javascript:void(0)" style="display: none">
+<span class="zippy">
+<i class="material-icons">
+                        
+                      </i>
+                      &nbsp;
+                    
+</span>
+</a>
+<a class="post-count-link" href="https://research.googleblog.com/search?updated-min=2011-01-01T00:00:00-08:00&amp;updated-max=2012-01-01T00:00:00-08:00&amp;max-results=50">
+2011
+</a>
+</div>
+<div class="items"><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2011_01_01_archive.html">
+Jan
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2011_02_01_archive.html">
+Feb
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2011_03_01_archive.html">
+Mar
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2011_04_01_archive.html">
+Apr
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2011_05_01_archive.html">
+May
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2011_06_01_archive.html">
+Jun
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2011_07_01_archive.html">
+Jul
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2011_08_01_archive.html">
+Aug
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2011_09_01_archive.html">
+Sep
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2011_11_01_archive.html">
+Nov
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2011_12_01_archive.html">
+Dec
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+</div>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="intervalToggle">
+<span class="new-toggle" href="javascript:void(0)">
+<i class="material-icons arrow">
+                    
+                  </i>
+</span>
+<a class="toggle" href="javascript:void(0)" style="display: none">
+<span class="zippy">
+<i class="material-icons">
+                        
+                      </i>
+                      &nbsp;
+                    
+</span>
+</a>
+<a class="post-count-link" href="https://research.googleblog.com/search?updated-min=2010-01-01T00:00:00-08:00&amp;updated-max=2011-01-01T00:00:00-08:00&amp;max-results=44">
+2010
+</a>
+</div>
+<div class="items"><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2010_01_01_archive.html">
+Jan
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2010_02_01_archive.html">
+Feb
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2010_03_01_archive.html">
+Mar
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2010_04_01_archive.html">
+Apr
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2010_05_01_archive.html">
+May
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2010_06_01_archive.html">
+Jun
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2010_07_01_archive.html">
+Jul
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2010_08_01_archive.html">
+Aug
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2010_09_01_archive.html">
+Sep
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2010_10_01_archive.html">
+Oct
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2010_11_01_archive.html">
+Nov
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2010_12_01_archive.html">
+Dec
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="intervalToggle">
+<span class="new-toggle" href="javascript:void(0)">
+<i class="material-icons arrow">
+                    
+                  </i>
+</span>
+<a class="toggle" href="javascript:void(0)" style="display: none">
+<span class="zippy">
+<i class="material-icons">
+                        
+                      </i>
+                      &nbsp;
+                    
+</span>
+</a>
+<a class="post-count-link" href="https://research.googleblog.com/search?updated-min=2009-01-01T00:00:00-08:00&amp;updated-max=2010-01-01T00:00:00-08:00&amp;max-results=44">
+2009
+</a>
+</div>
+<div class="items"><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2009_01_01_archive.html">
+Jan
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2009_02_01_archive.html">
+Feb
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2009_03_01_archive.html">
+Mar
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2009_04_01_archive.html">
+Apr
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2009_05_01_archive.html">
+May
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2009_06_01_archive.html">
+Jun
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2009_07_01_archive.html">
+Jul
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2009_08_01_archive.html">
+Aug
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2009_11_01_archive.html">
+Nov
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2009_12_01_archive.html">
+Dec
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</div>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="intervalToggle">
+<span class="new-toggle" href="javascript:void(0)">
+<i class="material-icons arrow">
+                    
+                  </i>
+</span>
+<a class="toggle" href="javascript:void(0)" style="display: none">
+<span class="zippy">
+<i class="material-icons">
+                        
+                      </i>
+                      &nbsp;
+                    
+</span>
+</a>
+<a class="post-count-link" href="https://research.googleblog.com/search?updated-min=2008-01-01T00:00:00-08:00&amp;updated-max=2009-01-01T00:00:00-08:00&amp;max-results=11">
+2008
+</a>
+</div>
+<div class="items"><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2008_02_01_archive.html">
+Feb
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2008_03_01_archive.html">
+Mar
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2008_04_01_archive.html">
+Apr
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2008_05_01_archive.html">
+May
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2008_07_01_archive.html">
+Jul
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2008_09_01_archive.html">
+Sep
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2008_10_01_archive.html">
+Oct
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2008_11_01_archive.html">
+Nov
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2008_12_01_archive.html">
+Dec
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+</div>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="intervalToggle">
+<span class="new-toggle" href="javascript:void(0)">
+<i class="material-icons arrow">
+                    
+                  </i>
+</span>
+<a class="toggle" href="javascript:void(0)" style="display: none">
+<span class="zippy">
+<i class="material-icons">
+                        
+                      </i>
+                      &nbsp;
+                    
+</span>
+</a>
+<a class="post-count-link" href="https://research.googleblog.com/search?updated-min=2007-01-01T00:00:00-08:00&amp;updated-max=2008-01-01T00:00:00-08:00&amp;max-results=9">
+2007
+</a>
+</div>
+<div class="items"><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2007_02_01_archive.html">
+Feb
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2007_06_01_archive.html">
+Jun
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2007_07_01_archive.html">
+Jul
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2007_08_01_archive.html">
+Aug
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2007_09_01_archive.html">
+Sep
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2007_10_01_archive.html">
+Oct
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul>
+
+
+
+
+
+
+</div>
+</li>
+</ul>
+<ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="intervalToggle">
+<span class="new-toggle" href="javascript:void(0)">
+<i class="material-icons arrow">
+                    
+                  </i>
+</span>
+<a class="toggle" href="javascript:void(0)" style="display: none">
+<span class="zippy">
+<i class="material-icons">
+                        
+                      </i>
+                      &nbsp;
+                    
+</span>
+</a>
+<a class="post-count-link" href="https://research.googleblog.com/search?updated-min=2006-01-01T00:00:00-08:00&amp;updated-max=2007-01-01T00:00:00-08:00&amp;max-results=15">
+2006
+</a>
+</div>
+<div class="items"><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2006_02_01_archive.html">
+Feb
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2006_03_01_archive.html">
+Mar
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2006_04_01_archive.html">
+Apr
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2006_06_01_archive.html">
+Jun
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2006_07_01_archive.html">
+Jul
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2006_08_01_archive.html">
+Aug
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2006_09_01_archive.html">
+Sep
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2006_11_01_archive.html">
+Nov
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul><ul class="hierarchy">
+<li class="archivedate collapsed">
+<div class="">
+<a class="post-count-link" href="https://research.googleblog.com/2006_12_01_archive.html">
+Dec
+</a>
+</div>
+<div class="items">
+</div>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="clear"></div>
+<span class="widget-item-control">
+<span class="item-control blog-admin">
+<a class="quickedit" href="https://www.blogger.com/rearrange?blogID=21224994&amp;widgetType=BlogArchive&amp;widgetId=BlogArchive1&amp;action=editWidget&amp;sectionId=sidebar" onclick="return _WidgetManager._PopupConfig(document.getElementById(&quot;BlogArchive1&quot;));" target="configBlogArchive1" title="Edit">
+<img alt="" height="18" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/icon18_wrench_allbkg.png" width="18">
+</a>
+</span>
+</span>
+<div class="clear"></div>
+</div>
+</div><div class="widget HTML" data-version="1" id="HTML6">
+<div class="widget-content">
+<a href="http://googleresearch.blogspot.com/atom.xml">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAihJREFUeNrsWa9Pw0AU7viRMDFRBAkzJDMIBIhJJhCzk7NILIqMv4AEhdz+BCY3OYssAlGBoAJREpZwAlHEBO8lr8nSvNeVbu1dyX3JlzTrXfa+u/e9d7c5joWFhYVO1Fa8PwH2gK6m+BRwAvSlAdsrgr8E1jUuMH73GTAEzrkBWymTewZlihhLmgDXIAFuHgGVQOUF7OSYM1p6PgTuA1vAZlUEvAnPdapcMY0VICECekQ0XRfYrqoHsAGNgXfAoMomRiFDEhOZkkL3S88hMaB2LwXp0bj+ps2edpToZpjfoIDQtBeU+xjoDzP2G/gCPKZ5f8WsCAFJoJgOCcFdWSTeL9YQMSvTA1h9BkI5jaiXhLpSCL/8mVZY0UpyJ9ZdOkniu1dmJ96BpzQu9w6s28gcOq9j6pwLdR8/36NK5CQKwJSMrb2MhhSglBpt4UjsrdsnNu0B3J0HCozbCc4TjyY2srEgos/4RQljCzNxl4ireQD8FOq+T+W0mTB2g7njhlR+Sy2jsXFvU658U8YTbeaGpdIu7mWkEAq5ZtIjIhFZdtfX7QHckSvB2B6zC3VdAkZk0kAQwaXTk/CzTXK3wjIExCs6ZJpTnE4uY1KV+KzFzA3KTiFPENHJkOPcsfpLhwe4btoSuvUqAR+6TOxlCE6ZfKUsJLgsqGW8OpqAGx2X+sLxrwUog+JUeQRMDBIwyXOcnlPtPnL0/UsT/8LnOxYWFhZG4leAAQAAQHEaYuzHbAAAAABJRU5ErkJggg==" class="sidebar-icon">
+<h2>Feed</h2>
+</a>
+</div>
+<div class="clear"></div>
+<span class="widget-item-control">
+<span class="item-control blog-admin">
+<a class="quickedit" href="https://www.blogger.com/rearrange?blogID=21224994&amp;widgetType=HTML&amp;widgetId=HTML6&amp;action=editWidget&amp;sectionId=sidebar" onclick="return _WidgetManager._PopupConfig(document.getElementById(&quot;HTML6&quot;));" target="configHTML6" title="Edit">
+<img alt="" height="18" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/icon18_wrench_allbkg.png" width="18">
+</a>
+</span>
+</span>
+<div class="clear"></div>
+</div></div>
+<div class="section" id="sidebar-bottom"><div class="widget HTML" data-version="1" id="HTML5">
+<div class="widget-content">
+<div class="followgooglewrapper">
+<a href="http://plus.google.com/+researchatgoogle" rel="publisher" style="text-decoration:none;display:inline-block;color:#333;text-align:center; font:13px/16px arial,sans-serif;white-space:nowrap;">
+<span style="display:inline-block;font-weight:bold;vertical-align:top;margin-right:5px; margin-top:0px;">Google</span><span style="display:inline-block;vertical-align:top;margin-right:13px; margin-top:0px;">on</span>
+<img src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/gplus-16.png" alt="Google+" style="border:0;width:16px;height:16px;"></a>
+</div>
+
+<div class="share followgooglewrapper">
+<button data-href="https://twitter.com/intent/follow?original_referer=http://googleresearch.blogspot.in/&amp;screen_name=googleresearch" onclick="sharingPopup(this);" id="twitter-share"><span class="twitter-follow">Follow @googleresearch</span></button>
+<script>     
+      function sharingPopup (button) {
+      var url = button.getAttribute("data-href");
+	    window.open(
+ url,'popUpWindow','height=500,width=500,left=10,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes');
+          }
+    </script>
+</div>
+</div>
+<div class="clear"></div>
+<span class="widget-item-control">
+<span class="item-control blog-admin">
+<a class="quickedit" href="https://www.blogger.com/rearrange?blogID=21224994&amp;widgetType=HTML&amp;widgetId=HTML5&amp;action=editWidget&amp;sectionId=sidebar-bottom" onclick="return _WidgetManager._PopupConfig(document.getElementById(&quot;HTML5&quot;));" target="configHTML5" title="Edit">
+<img alt="" height="18" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/icon18_wrench_allbkg.png" width="18">
+</a>
+</span>
+</span>
+<div class="clear"></div>
+</div><div class="widget HTML" data-version="1" id="HTML1">
+<div class="widget-content">
+Give us feedback in our <a href="http://support.google.com/bin/static.py?hl=en&amp;page=portal_groups.cs">Product Forums</a>.
+</div>
+<div class="clear"></div>
+<span class="widget-item-control">
+<span class="item-control blog-admin">
+<a class="quickedit" href="https://www.blogger.com/rearrange?blogID=21224994&amp;widgetType=HTML&amp;widgetId=HTML1&amp;action=editWidget&amp;sectionId=sidebar-bottom" onclick="return _WidgetManager._PopupConfig(document.getElementById(&quot;HTML1&quot;));" target="configHTML1" title="Edit">
+<img alt="" height="18" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/icon18_wrench_allbkg.png" width="18">
+</a>
+</span>
+</span>
+<div class="clear"></div>
+</div></div>
+</div>
+</div>
+<div style="clear:both;"></div>
+</div>
+<!-- Footer -->
+<div class="footer-outer">
+<div class="footer-inner">
+<div class="footer-inner-2">
+<div style="width:33%;float:left;">
+<div class="section" id="footer-1"><div class="widget HTML" data-version="1" id="HTML2">
+<h2 class="title">
+Company-wide
+</h2>
+<div class="widget-content">
+<ul>
+<li>
+<a href="https://googleblog.blogspot.com/" title="Official Google">Official Google Blog</a>
+</li>
+<li>
+<a href="https://googlepublicpolicy.blogspot.com/" title="Public Policy">Public Policy Blog</a>
+</li>
+<li>
+<a href="https://googleforstudents.blogspot.com/" title="Student">Student Blog</a>
+</li>
+</ul>
+</div>
+<div class="clear"></div>
+<span class="widget-item-control">
+<span class="item-control blog-admin">
+<a class="quickedit" href="https://www.blogger.com/rearrange?blogID=21224994&amp;widgetType=HTML&amp;widgetId=HTML2&amp;action=editWidget&amp;sectionId=footer-1" onclick="return _WidgetManager._PopupConfig(document.getElementById(&quot;HTML2&quot;));" target="configHTML2" title="Edit">
+<img alt="" height="18" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/icon18_wrench_allbkg.png" width="18">
+</a>
+</span>
+</span>
+<div class="clear"></div>
+</div></div>
+</div>
+<div style="width:33%;float:left;">
+<div class="section" id="footer-2"><div class="widget HTML" data-version="1" id="HTML3">
+<h2 class="title">
+Products
+</h2>
+<div class="widget-content">
+<ul>
+<li>
+<a href="https://officialandroid.blogspot.com/" title="Android">Android Blog</a>
+</li>
+<li>
+<a href="https://chrome.blogspot.com/" title="Chrome">Chrome Blog</a>
+</li>
+<li>
+<a href="https://google-latlong.blogspot.com/" title="Lat Long">Lat Long Blog</a>
+</li>
+</ul>
+</div>
+<div class="clear"></div>
+<span class="widget-item-control">
+<span class="item-control blog-admin">
+<a class="quickedit" href="https://www.blogger.com/rearrange?blogID=21224994&amp;widgetType=HTML&amp;widgetId=HTML3&amp;action=editWidget&amp;sectionId=footer-2" onclick="return _WidgetManager._PopupConfig(document.getElementById(&quot;HTML3&quot;));" target="configHTML3" title="Edit">
+<img alt="" height="18" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/icon18_wrench_allbkg.png" width="18">
+</a>
+</span>
+</span>
+<div class="clear"></div>
+</div></div>
+</div>
+<div style="width:33%;float:left;">
+<div class="section" id="footer-3"><div class="widget HTML" data-version="1" id="HTML4">
+<h2 class="title">
+Developers
+</h2>
+<div class="widget-content">
+<ul>
+<li>
+<a href="https://googledevelopers.blogspot.com/" title="Developers">Developers Blog</a>
+</li>
+<li>
+<a href="https://googleadsdeveloper.blogspot.com/" title="Ads Developer">Ads Developer Blog</a>
+</li>
+<li>
+<a href="https://android-developers.blogspot.com/" title="Android">Android Developers Blog</a>
+</li>
+</ul>
+</div>
+<div class="clear"></div>
+<span class="widget-item-control">
+<span class="item-control blog-admin">
+<a class="quickedit" href="https://www.blogger.com/rearrange?blogID=21224994&amp;widgetType=HTML&amp;widgetId=HTML4&amp;action=editWidget&amp;sectionId=footer-3" onclick="return _WidgetManager._PopupConfig(document.getElementById(&quot;HTML4&quot;));" target="configHTML4" title="Edit">
+<img alt="" height="18" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/icon18_wrench_allbkg.png" width="18">
+</a>
+</span>
+</span>
+<div class="clear"></div>
+</div></div>
+</div>
+<div style="clear:both;"></div>
+</div>
+</div>
+</div>
+<div class="google-footer-outer">
+<div id="google-footer">
+<a href="https://www.google.com/">
+<img class="google-logo-dark" height="36" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALgAAABICAYAAABFoT/eAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAACLVJREFUeNrsXd+L20YQ3vOprdLqiMXFXE2qB7dcwEcTSB7ykIc+9A/PQx/yEMq1TWhNuYIpJriNr7XpmZ5IxFEvmW2EKs3Ornb1w50PxIFP0kiz387OzM6uhGAwGAxGP3Ho+f7x7ri1O7LdccPqZjSNA4dEHsLfaHcEFedJom93x9Xu2OyOFTcBo6sED3fHZHeMEELrkAHJF0B8Rr+gDFsZ5n0luLTQ95AXs4W06D/tjpR50xtM4CjD0y48YGB4rnyZxNOzyA7zBHr+nLnDaJLg0mo/ALekCasg3Z4XbM0ZdTEgnDPeHY8bIne+Qz2GvwyGNwsuyT218KWvIIBMcwGpLiipcolecjMxfBDchNyS1EvxLiOSIecp31q6IJ/C3yrIrMqMm4jhg+AxkdwbIO3aUO4KjqqMjCT3uaazMBhWBJfuxH3CtRfiXf66DhSRZWbmlMnNaILgZxrXJQO/eO3wORZwvwm4JUxuhheCjzVBYAbW1ces45YDSoZrFNOEE835M8FT6oyeEnws8Fz3QnBxFKPHBMem4GU+m6fPGb0leCTwWcM5B36MPgeZI01gudyDdw3hPeXfo8L/rmCUWnuMMdqUL2WqWeRbhf+twfVsO7YagZGNC79fw7OthEVtkiJ4jJzTd3KPwf3CRqhhiTu23AP5sl0/0xiwISQXpNwLIJK87mHF+U8ddzzdmgKlGzlPYjyxGJQouIhNT4k9AqWEFkqfguIvagTWbcq3KW1WE3xS3m8NtA9WS451xofwjKT5kkDoK/b6mDk5FfXr1lWDL4BofZEv2/SRsK/EHGlGdBdu8QNRb8HMCFwt7Yy3DDI/QP7fx5z3VLhdlJEIs4rKNuXXJXdxZPdB7kfCzWqwCO4V1LHgLjInX3tQ1KzCR52Cz+vDj1dydeRuS74rcvs2Pi6fT5H8OaaUQPQPYcWwRSGXyhhscn5dpAnEFMkuEZetbfkTAnlSuH4DxisE+aMGeJAQ3lFl7C4LJE6QWCaCd583ORQ1jYAwjFctal7nOs2ZZvicwvlZx+RHGrcoAwKUVX8uwcc/9TT65INeDOr5shL9LDRB6QTeIy3zwfdh3WOi6axLCEhSjXU7F3h6LqggUtvyJxpynwu8tDkD98fXApOxRj8zoZ9MnGveYVIVZKaGrkBXCY65BCYNN9NkjpKOyQ81Q79JgdxS+Jn3SDTEXRI7SWzaiSTB32oI3nU3BvMfM0urhOVYgwKhuiAfc4tM07wXwm1ZRoQYSl2NUwiu01fEAHVcpixd745FvVz4dzUUc0o8rwoLy8ZSwU6CyFx1RP5II9+1bFPEFs9HWbNLiimDXE+vCm7u1CS47cofzD3aEhVY57mxRo5zlqdt+RFC1JUH2S7bcVXg4liTMakaBZZVxiTICRoivcn1sEUBlk24JmaC6kxUbYmWoqvyfck2xZGGnDFYa9MMzkYQ1ijkCX6qidybrgePiQ0QIQqoi6qRLeqQfIoRsEHaQJLBdHOnLGetSdm/IPcymJuS1PAnbQPH0MOw/39C1vL11DiLOqIsbDI8QcHvGiLnySi2qUXBicaqUSxN5LEB0g7Jt3ENXJLPJ5S1tnaZBoWbpRqrmjRE7qHmpSmNHdQcYrEUadoh+TbBnc9ri7iycI1kzPeNcLDIvbiqXpez9Tmdq6zGREPuzECBoxrPMiI2WtvyNwhJba2wy3JZ6ky5dD1lSvmZS3e4SPA1wcf1VTFHKX+cGwZzdUYcqpvUtvwrD/InDttVlyZeAKlNN5MKbAiurHhKIPlUuJvlTCCiDjSKSCsUmCFWbGLZwCESfK07JB8LvMYWVtw0D00JEHV8Mq2HkqPbE0oHLvvK2g0o8ETg+4cfwTlZDT9JDoWygu4uQQE/ivIvtcnfPkaCqhiupz7jWOAzqL/vjtcdkv9G4MVMt+EaylfuImiPAXEUjRF3pjjaHiPPZ6If9TGGAO4ZY0am6jOCb+DQ+ZCqLkIpOIPrdNfIjnFPY6nyFut7TS/fanrziOBOKMupKw94WaLMtuVnSFt9CPrWWdJE6PeltCX432DEBoh+5Dv8RRhdis8YAv9uyq4/JAwtlEApgBe9Cw9xDD3tdk4Jn0MDfiHwPHcRPxBePCMER3GuIx7kGlv9fkZ4V9lolx2Uv4X7hEj7qJ3LDoAMGbTRMRibu4L2xQ8bgt8AyU+Q+x7nYrvDnH4iuO5LxKsYwPVbkPMvKF9Zky9wXzRfVWizi62r9X5VHf55h+WHhDjGBZ4WRhyTr6z5SlCoLMxLSpBZFsQ9F80uQFbF/6aFWi+Ev51vzzsuX+msyzuQXXjUz8zEBy+zpq9yweXAoxJW4JbYrDS6gYDqGHxPl+TKeiBfxj9/EBIElPYeOA4y8/qRQfknjvSzgRgtq0Pw/M1eQeMdOSb2Bnrhr6Led+1vcp2x7oTFHMnedFW+Ivlty062BUt74oHgSj+vHepnhunn0JJAMtBZgDI/qmGtMujRv8DDpo47zBJ8UtPOuAR/7rKn8t9AJ0tBdmBAmJ/Fu71yxp4I3qh+DhyRqbi5Y1ShVPlSb8X7bRNcfgZFl+WRGYo7uecrWq1r8X5bhmzP5OdlDwsGRm1suSxkg5rYm7ConyGQ3Zl+DgSD8V/kPwrWBMG9YcBtyShBnTLdTiHgttw7qAW7cqh/ZnmPKr/6ignOaKsdyxbsToT5UkPsW00bJjijDXficcX/JsLs6w2BwGtherdckH3w/kNXRPVI0OqJQoHX42/66IMfMj/2huRjxIidgKV/W0JS+bsstDoTeAHcrI8E5zTh/sDkqxL5rZup55/3USlswfcHf4IrQplVDgW9XFlOqnwr6pVPMMEZTuC60EttvdzbLbaZ4PsFVa3nohhO+vW+yn/ZB2fUhpysmQrzBcTSai9EszuZMcEZ1lCFVrp9zGXhm69iLyY4oxFIa178lPe12I/P2DAYDAaDwWAwGAwGg8FgMBgMBoPBYDD2Cf8IMADDRGoQTe+E9AAAAABJRU5ErkJggg==" style="margin-top: -16px;" width="92">
+</a>
+<ul>
+<li>
+<a href="https://www.google.com/">
+              Google
+            </a>
+</li>
+<li>
+<a href="https://www.google.com/policies/privacy/">
+              Privacy
+            </a>
+</li>
+<li>
+<a href="https://www.google.com/policies/terms/">
+              Terms
+            </a>
+</li>
+</ul>
+</div>
+</div>
+<script type="text/javascript">
+      //<![CDATA[
+      // Social sharing popups.
+      var postEl = document.getElementsByClassName('social-wrapper');
+      var postCount = postEl.length;
+      for(i=0; i<postCount;i++){
+        postEl[i].addEventListener("click", function(event){
+          var postUrl = this.getAttribute("data-href");
+          window.open(
+            postUrl,'popUpWindow','height=500,width=500,left=10,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes');
+        });}
+      //]]>
+    </script>
+<script type="text/javascript">
+      //<![CDATA[
+      var BreakpointHandler = function() {
+        this.initted = false;
+        this.isHomePage = false;
+        this.isMobile = false;
+      };
+      BreakpointHandler.prototype.finalizeSummary = function(summaryHtml, lastNode) {
+        // Use $.trim for IE8 compatibility
+        summaryHtml = $.trim(summaryHtml).replace(/(<br>|\s)+$/,'');
+        if (lastNode.nodeType == 3) {
+          var lastChar = summaryHtml.slice(-1);
+          if (!lastChar.match(/[.”"?]/)) {
+            if (!lastChar.match(/[A-Za-z]/)) {
+              summaryHtml = summaryHtml.slice(0, -1);
+            }
+            summaryHtml += ' ...';
+          }
+        } else if (lastNode.nodeType == 1 && (lastNode.nodeName == 'I' || lastNode.nodeName == 'A')) {
+          summaryHtml += ' ...';
+        }
+        return summaryHtml;
+      };
+      BreakpointHandler.prototype.generateSummaryFromContent = function(content, numWords) {
+        var seenWords = 0;
+        var summaryHtml = '';
+        for (var i=0; i < content.childNodes.length; i++) {
+          var node = content.childNodes[i];
+          var nodeText;
+          if (node.nodeType == 1) {
+            if (node.hasAttribute('data-about-pullquote')) {
+              continue;
+            }
+            nodeText = node.textContent;
+            if (nodeText === undefined) {
+              // innerText for IE8
+              nodeText = node.innerText;
+            }
+            if (node.nodeName == 'DIV' || node.nodeName == 'B') {
+              // Don't end early if we haven't seen enough words.
+              if (seenWords < 10) {
+                continue;
+              }
+              if (i > 0) {
+                summaryHtml = this.finalizeSummary(summaryHtml, content.childNodes[i-1]);
+              }
+              break;
+            }
+            summaryHtml += node.outerHTML;
+          } else if (node.nodeType == 3) {
+            nodeText = node.nodeValue;
+            summaryHtml += nodeText + ' ';
+          }
+          var words = nodeText.match(/\S+\s*/g);
+          if (!words) {
+            continue;
+          }
+          var remain = numWords - seenWords;
+          if (words.length >= remain) {
+            summaryHtml = this.finalizeSummary(summaryHtml, node);
+            break;
+          }
+          seenWords += words.length;
+        }
+        return summaryHtml;
+      };
+      BreakpointHandler.prototype.detect = function() {
+        var match,
+            pl     = /\+/g,
+            search = /([^&=]+)=?([^&]*)/g,
+            decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+            query  = window.location.search.substring(1);
+        var urlParams = {};
+        while (match = search.exec(query))
+          urlParams[decode(match[1])] = decode(match[2]);
+        this.isListPage = $('html').hasClass('list-page');
+        this.isMobile = urlParams['m'] === '1';
+        this.isHomePage = window.location.pathname == '/';
+      };
+      BreakpointHandler.prototype.initContent = function() {
+        var self = this;
+        $('.post').each(function(index) {
+          var body = $(this).children('.post-body')[0];
+          var content = $(body).children('.post-content')[0];
+          $(content).addClass('post-original');
+          var data = $(content).children('script').html();
+          data = self.rewriteForSSL(data);
+          // If exists, extract specified editor's preview.
+          var match = data.match(/([\s\S]+?)<div data-is-preview.+?>([\s\S]+)<\/div>/m);
+          if (match) {
+            data = match[1];
+          }
+          // Prevent big images from loading when they aren't needed.
+          // This must be done as a pre-injection step, since image loading can't be
+          // canceled once embedded into the DOM.
+          if (self.isListPage && self.isMobile) {
+            data = data.replace(/<(img|iframe) .+?>/g, '');
+          }
+          // Insert template to be rendered as nodes.
+          content.innerHTML = data;
+          if (self.isListPage) {
+            var summary = document.createElement('div');
+            $(summary).addClass('post-content');
+            $(summary).addClass('post-summary');
+            body.insertBefore(summary, content);
+            if (match) {
+              // Use provided summary.
+              summary.innerHTML = match[2];
+            } else {
+              // Generate a summary.
+              // Summary generation relies on DOM, so it must occur after content is
+              // inserted into the page.
+              summary.innerHTML = self.generateSummaryFromContent(content, 30);
+            }
+            // Add read more link to summary.
+            var titleAnchor = $(this).find('.title a')[0];
+            var link = titleAnchor.cloneNode(true);
+            link.innerHTML = 'Read More';
+            $(link).addClass('read-more');
+            summary.appendChild(link);
+          }
+        });
+        // Firefox does not allow for proper styling of BR.
+        if (navigator.userAgent.indexOf('Firefox') > -1) {
+          $('.post-content br').replaceWith('<span class="space"></span>');
+        }
+        $('.loading').removeClass('loading');
+      };
+      BreakpointHandler.prototype.process = function() {
+        if (!this.initted) {
+          var makeInsecureImageRegex = function(hosts) {
+            var whitelist = hosts.join('|').replace(/\./g,'\\.');
+            // Normal image tags, plus input images (yes, this is possible!)
+            return new RegExp('(<(img|input)[^>]+?src=("|\'))http:\/\/(' + whitelist +')', 'g');
+          };
+          this.sslImageRegex = makeInsecureImageRegex(BreakpointHandler.KNOWN_HTTPS_HOSTS);
+          this.sslImageCurrentDomainRegex = makeInsecureImageRegex([window.location.hostname]);
+          this.detect();
+          this.initContent();
+          this.initted = true;
+        }
+      };
+      BreakpointHandler.KNOWN_HTTPS_HOSTS = [
+        "www.google.org",
+        "www.google.com",
+        "services.google.com",
+        "blogger.com",
+        "draft.blogger.com",
+        "www.blogger.com",
+        "photos1.blogger.com",
+        "photos2.blogger.com",
+        "photos3.blogger.com",
+        "blogblog.com",
+        "img1.blogblog.com",
+        "img2.blogblog.com",
+        "www.blogblog.com",
+        "www1.blogblog.com",
+        "www2.blogblog.com",
+        "0.bp.blogspot.com",
+        "1.bp.blogspot.com",
+        "2.bp.blogspot.com",
+        "3.bp.blogspot.com",
+        "4.bp.blogspot.com",
+        "lh3.googleusercontent.com",
+        "lh4.googleusercontent.com",
+        "lh5.googleusercontent.com",
+        "lh6.googleusercontent.com",
+        "themes.googleusercontent.com",
+      ];
+        BreakpointHandler.prototype.rewriteForSSL = function(html) {
+        // Handle HTTP -> HTTPS source replacement of images, movies, and other embedded content.
+        return html.replace(this.sslImageRegex, '$1https://$4')
+        .replace(this.sslImageCurrentDomainRegex, '$1//$4')
+        .replace(/(<(embed|iframe)[^>]+?src=("|'))http:\/\/([^"']*?(youtube|picasaweb\.google)\.com)/g, '$1https://$4')
+        // Slideshow SWF takes a image host, so we need to rewrite that parameter.
+        .replace(/(<embed[^>]+?feed=http(?=[^s]))/g, '$1s');
+        };
+        $(document).ready(function() {
+        var handler = new BreakpointHandler();
+        handler.process();
+        // Top-level navigation.
+        $(".BlogArchive .tab").click(function(ev) {
+        ev.preventDefault();
+        $(this).parent().toggleClass('active');
+        $(this).siblings().slideToggle(300);
+        });
+        $(".Label .tab").click(function(ev) {
+        ev.preventDefault();
+        $(this).parent().toggleClass('active');
+        $(this).siblings().slideToggle(300);
+        });
+        // Blog archive year expansion.
+        $('.BlogArchive .intervalToggle').click(function(ev) {
+        ev.preventDefault();
+        if ($(this).parent().hasClass('collapsed')) {
+        $(this).parent().removeClass('collapsed');
+        $(this).parent().addClass('expanded');
+        } else {
+        $(this).parent().removeClass('expanded');
+        $(this).parent().addClass('collapsed');
+        }
+        });
+        // Reverse order of months.
+        $('.BlogArchive .intervalToggle + div').each(function(_, items) {
+        var year = $(this);
+        year.children().each(function(_, month) {
+        year.prepend(month);
+        });
+        });
+        // Set anchors to open in new tab.
+        $('.post-content img').parent().each(function(_, node) {
+        if (node.nodeName == 'A') {
+        $(this).attr('target', '_blank');
+        }
+        });
+        // Process search requests.
+        $('.searchBox input').on("keypress", function(ev) {
+        if (ev.which == 13) {
+        window.location.href = 'https://www.google.com/search?q=site%3A' + window.location.hostname + '%20' + encodeURIComponent ($(this).val());
+        }
+        });
+        });
+        //]]>
+    </script>
+
+
+<!-- 'Poinformowanie użytkowników o plikach cookie używanych na blogu jest Twoim obowiązkiem. Tu znajdziesz więcej informacji: http://www.blogger.com/go/cookiechoices.' -->
+<script src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/cookiechoices.js" defer=""></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function(event) {
+    window.cookieChoices && cookieChoices.showCookieConsentBar && cookieChoices.showCookieConsentBar(
+        (window.cookieOptions && cookieOptions.msg) || 'Na tej stronie używamy plików cookie Google, by móc świadczyć Ci usługi, personalizować reklamy i analizować ruch. Informacje o tym, jak korzystasz z tej strony, są udostępniane Google. Korzystając z niej, zgadzasz się na to.',
+        (window.cookieOptions && cookieOptions.close) || 'Rozumiem',
+        (window.cookieOptions && cookieOptions.learn) || 'Dowiedz się więcej',
+        (window.cookieOptions && cookieOptions.link) || 'https://www.blogger.com/go/blogspot-cookies');
+  });
+</script>
+
+
+<script type="text/javascript" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/1402174469-widgets.js"></script>
+<script type="text/javascript" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/plusone.js" gapi_processed="true"></script>
+<script type="text/javascript">
+window['__wavt'] = 'AOuZoY4de4O4rdRbr0RL_xACQBMIiM9U4Q:1484697381651';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d21224994','//research.googleblog.com/2015/06/inceptionism-going-deeper-into-neural.html','21224994');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '21224994', 'bloggerUrl': 'https://www.blogger.com', 'title': 'Research Blog', 'pageType': 'item', 'postId': '5675413448691562451', 'url': 'https://research.googleblog.com/2015/06/inceptionism-going-deeper-into-neural.html', 'canonicalUrl': 'https://research.googleblog.com/2015/06/inceptionism-going-deeper-into-neural.html', 'homepageUrl': 'https://research.googleblog.com/', 'searchUrl': 'https://research.googleblog.com/search', 'canonicalHomepageUrl': 'https://research.googleblog.com/', 'blogspotFaviconUrl': 'https://research.googleblog.com/favicon.ico', 'hasCustomDomain': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': 'UA-3589841-1', 'useUniversalAnalytics': false, 'pageName': 'Inceptionism: Going Deeper into Neural Networks', 'pageTitle': 'Research Blog: Inceptionism: Going Deeper into Neural Networks', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'languageDirection': 'ltr', 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22Research Blog - Atom\x22 href\x3d\x22https://research.googleblog.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22Research Blog - RSS\x22 href\x3d\x22https://research.googleblog.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22Research Blog - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/21224994/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22Research Blog - Atom\x22 href\x3d\x22https://research.googleblog.com/feeds/5675413448691562451/comments/default\x22 /\x3e\n', 'meTag': '', 'openIdOpTag': '', 'postImageThumbnailUrl': 'https://4.bp.blogspot.com/-tTYZpdJ18bg/VYITAO4s_uI/AAAAAAAAAlE/L7VMImFFt_M/s72-c/noise-to-banana.png', 'postImageUrl': 'https://4.bp.blogspot.com/-tTYZpdJ18bg/VYITAO4s_uI/AAAAAAAAAlE/L7VMImFFt_M/s640/noise-to-banana.png', 'mobileHeadScript': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'ieCssRetrofitLinks': '\x3c!--[if IE]\x3e\x3cscript type\x3d\x22text/javascript\x22 src\x3d\x22https://www.blogger.com/static/v1/jsbin/3032875878-ieretrofit.js\x22\x3e\x3c/script\x3e\n\x3c![endif]--\x3e', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/0d81398a922284ce', 'plusOneApiSrc': 'https://apis.google.com/js/plusone.js', 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'Twitter', 'key': 'twitter', 'shareMessage': 'Share to Twitter', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Google+', 'key': 'googlePlus', 'shareMessage': 'Share to Google+', 'target': 'googleplus'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'googlePlusShareButtonWidth': 300, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}}}, {'name': 'features', 'data': {'widgetVisibility': true}}, {'name': 'messages', 'data': {'linkCopiedToClipboard': 'Link copied to clipboard!', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': 'Inceptionism: Going Deeper into Neural Networks', 'description': 'Posted by Alexander Mordvintsev, Software Engineer, Christopher Olah, Software Engineering Intern and Mike Tyka, Software Engineer   Update ...', 'featuredImage': 'https://4.bp.blogspot.com/-tTYZpdJ18bg/VYITAO4s_uI/AAAAAAAAAlE/L7VMImFFt_M/s640/noise-to-banana.png', 'url': 'https://research.googleblog.com/2015/06/inceptionism-going-deeper-into-neural.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isSearch': false, 'isLabelSearch': false, 'postId': 5675413448691562451}}]);
+_WidgetManager._RegisterWidget('_HeaderView', new _WidgetInfo('Header1', 'header', null, document.getElementById('Header1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'main', null, document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'showBacklinks': true, 'postId': '5675413448691562451', 'legacyCommentModerationUrl': 'https://www.blogger.com/moderate-legacy-comment.g?blogID\x3d21224994', 'iframeCommentsId': 'gpluscomments', 'viewType': 'FILTERED_POSTMOD'}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_HTMLView', new _WidgetInfo('HTML8', 'sidebar-top', null, document.getElementById('HTML8'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_LabelView', new _WidgetInfo('Label1', 'sidebar', null, document.getElementById('Label1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_BlogArchiveView', new _WidgetInfo('BlogArchive1', 'sidebar', null, document.getElementById('BlogArchive1'), {'languageDirection': 'ltr', 'loadingMessage': 'Loading\x26hellip;'}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_HTMLView', new _WidgetInfo('HTML6', 'sidebar', null, document.getElementById('HTML6'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_HTMLView', new _WidgetInfo('HTML5', 'sidebar-bottom', null, document.getElementById('HTML5'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_HTMLView', new _WidgetInfo('HTML1', 'sidebar-bottom', null, document.getElementById('HTML1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_HTMLView', new _WidgetInfo('HTML2', 'footer-1', null, document.getElementById('HTML2'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_HTMLView', new _WidgetInfo('HTML3', 'footer-2', null, document.getElementById('HTML3'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_HTMLView', new _WidgetInfo('HTML4', 'footer-3', null, document.getElementById('HTML4'), {}, 'displayModeFull'));
+</script>
+
+<div id="cookieChoiceInfo" class="cookie-choices-info singleton-element"><div class="cookie-choices-inner"><span class="cookie-choices-text">Na tej stronie używamy plików cookie Google, by móc świadczyć Ci usługi, personalizować reklamy i analizować ruch. Informacje o tym, jak korzystasz z tej strony, są udostępniane Google. Korzystając z niej, zgadzasz się na to.</span><span class="cookie-choices-buttons"><a href="https://www.blogger.com/go/blogspot-cookies" target="_blank" class="cookie-choices-button">Dowiedz się więcej</a><a id="cookieChoiceDismiss" href="https://research.googleblog.com/2015/06/inceptionism-going-deeper-into-neural.html#" class="cookie-choices-button">Rozumiem</a></span></div></div><iframe name="oauth2relay695504662" id="oauth2relay695504662" src="./Research Blog_ Inceptionism_ Going Deeper into Neural Networks_files/postmessageRelay.html" tabindex="-1" aria-hidden="true" style="width: 1px; height: 1px; position: absolute; top: -100px;"></iframe></body></html>

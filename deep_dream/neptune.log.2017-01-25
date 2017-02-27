@@ -1,0 +1,16 @@
+2017-01-25 12:02:09,472 deepsense.neptune.common.api.utils ERROR    utils.py:92 - log_exception() Failed to call retry_loop
+2017-01-25 12:02:09,472 deepsense.neptune.common.api.utils ERROR    utils.py:93 - log_exception() Neptune server response error! (422) Invalid job status. Expected: executing, queued
+Traceback (most recent call last):
+  File "/home/jakub.czakon/neptune_2.7/local/lib/python2.7/site-packages/deepsense/neptune/common/api/utils.py", line 96, in func_wrapper
+    return func(*args, **kwargs)
+  File "/home/jakub.czakon/neptune_2.7/local/lib/python2.7/site-packages/deepsense/neptune/common/api/utils.py", line 72, in retry_loop
+    raise response_error
+NeptuneServerResponseErrorException: Neptune server response error! (422) Invalid job status. Expected: executing, queued
+2017-01-25 12:02:10,041 deepsense.neptune.common.api.utils ERROR    utils.py:92 - log_exception() Failed to call retry_loop
+2017-01-25 12:02:10,041 deepsense.neptune.common.api.utils ERROR    utils.py:93 - log_exception() Neptune server response error! (422) Invalid job status. Expected: executing, queued
+Traceback (most recent call last):
+  File "/home/jakub.czakon/neptune_2.7/local/lib/python2.7/site-packages/deepsense/neptune/common/api/utils.py", line 96, in func_wrapper
+    return func(*args, **kwargs)
+  File "/home/jakub.czakon/neptune_2.7/local/lib/python2.7/site-packages/deepsense/neptune/common/api/utils.py", line 72, in retry_loop
+    raise response_error
+NeptuneServerResponseErrorException: Neptune server response error! (422) Invalid job status. Expected: executing, queued

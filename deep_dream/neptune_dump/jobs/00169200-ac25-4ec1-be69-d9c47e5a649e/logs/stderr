@@ -1,0 +1,62 @@
+Using TensorFlow backend.
+I tensorflow/stream_executor/dso_loader.cc:128] successfully opened CUDA library libcublas.so locally
+I tensorflow/stream_executor/dso_loader.cc:128] successfully opened CUDA library libcudnn.so locally
+I tensorflow/stream_executor/dso_loader.cc:128] successfully opened CUDA library libcufft.so locally
+I tensorflow/stream_executor/dso_loader.cc:128] successfully opened CUDA library libcuda.so.1 locally
+I tensorflow/stream_executor/dso_loader.cc:128] successfully opened CUDA library libcurand.so locally
+Traceback (most recent call last):
+  File "/home/jakub.czakon/deep_learning_art_webinar/deep_dream/neptune_dump/jobs/00169200-ac25-4ec1-be69-d9c47e5a649e/src/deep_dream_neptune.py", line 52, in <module>
+    channel_type=neptune.ChannelType.TEXT)
+  File "/home/jakub.czakon/neptune_2.7/local/lib/python2.7/site-packages/deepsense/neptune/common/models/parameters_validation.py", line 58, in wrapper
+    return f(**result_args)
+  File "/home/jakub.czakon/neptune_2.7/local/lib/python2.7/site-packages/deepsense/neptune/client_library/job_development_api/job.py", line 133, in create_channel
+    job_id=self.context.job.id, channels=self._channels)
+  File "/home/jakub.czakon/neptune_2.7/local/lib/python2.7/site-packages/deepsense/neptune/common/api/job_api_service.py", line 130, in update_job
+    job = self._api_handler.jobs_job_id_put(job_id, edit_job_params)
+  File "/home/jakub.czakon/neptune_2.7/local/lib/python2.7/site-packages/deepsense/neptune/common/api/utils.py", line 65, in retry_loop
+    result = fun(*args, **kwargs)
+  File "/home/jakub.czakon/neptune_2.7/local/lib/python2.7/site-packages/deepsense/neptune/common/api/neptune_api/with_retries.py", line 163, in jobs_job_id_put
+    return self._neptune_api_handler.jobs_job_id_put(job_id, name, **kwargs)
+  File "/home/jakub.czakon/neptune_2.7/local/lib/python2.7/site-packages/deepsense/neptune/common/api/utils.py", line 96, in func_wrapper
+    return func(*args, **kwargs)
+  File "/home/jakub.czakon/neptune_2.7/local/lib/python2.7/site-packages/deepsense/neptune/common/api/neptune_api/with_logged_exceptions.py", line 165, in jobs_job_id_put
+    return self._neptune_api_handler.jobs_job_id_put(job_id, name, **kwargs)
+  File "/home/jakub.czakon/neptune_2.7/local/lib/python2.7/site-packages/deepsense/neptune/common/api/utils.py", line 114, in func_wrapper
+    return func(*args, **kwargs)
+  File "/home/jakub.czakon/neptune_2.7/local/lib/python2.7/site-packages/deepsense/neptune/common/api/neptune_api/with_wrapped_exceptions.py", line 165, in jobs_job_id_put
+    return self._neptune_api_handler.jobs_job_id_put(job_id, name, **kwargs)
+  File "/home/jakub.czakon/neptune_2.7/local/lib/python2.7/site-packages/deepsense/generated/swagger_client/apis/default_api.py", line 2937, in jobs_job_id_put
+    callback=params.get('callback'))
+  File "/home/jakub.czakon/neptune_2.7/local/lib/python2.7/site-packages/deepsense/generated/swagger_client/api_client.py", line 323, in call_api
+    response_type, auth_settings, callback)
+  File "/home/jakub.czakon/neptune_2.7/local/lib/python2.7/site-packages/deepsense/generated/swagger_client/api_client.py", line 150, in __call_api
+    post_params=post_params, body=body)
+  File "/home/jakub.czakon/neptune_2.7/local/lib/python2.7/site-packages/deepsense/generated/swagger_client/api_client.py", line 365, in request
+    body=body)
+  File "/home/jakub.czakon/neptune_2.7/local/lib/python2.7/site-packages/deepsense/generated/swagger_client/rest.py", line 222, in PUT
+    body=body)
+  File "/home/jakub.czakon/neptune_2.7/local/lib/python2.7/site-packages/deepsense/generated/swagger_client/rest.py", line 147, in request
+    retries=False)
+  File "/home/jakub.czakon/neptune_2.7/local/lib/python2.7/site-packages/urllib3/request.py", line 73, in request
+    **urlopen_kw)
+  File "/home/jakub.czakon/neptune_2.7/local/lib/python2.7/site-packages/urllib3/request.py", line 151, in request_encode_body
+    return self.urlopen(method, url, **extra_kw)
+  File "/home/jakub.czakon/neptune_2.7/local/lib/python2.7/site-packages/urllib3/poolmanager.py", line 248, in urlopen
+    response = conn.urlopen(method, u.request_uri, **kw)
+  File "/home/jakub.czakon/neptune_2.7/local/lib/python2.7/site-packages/urllib3/connectionpool.py", line 595, in urlopen
+    chunked=chunked)
+  File "/home/jakub.czakon/neptune_2.7/local/lib/python2.7/site-packages/urllib3/connectionpool.py", line 386, in _make_request
+    httplib_response = conn.getresponse(buffering=True)
+  File "/usr/lib/python2.7/httplib.py", line 1136, in getresponse
+    response.begin()
+  File "/usr/lib/python2.7/httplib.py", line 453, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python2.7/httplib.py", line 409, in _read_status
+    line = self.fp.readline(_MAXLINE + 1)
+  File "/usr/lib/python2.7/socket.py", line 480, in readline
+    data = self._sock.recv(self._rbufsize)
+  File "/usr/lib/python2.7/ssl.py", line 756, in recv
+    return self.read(buflen)
+  File "/usr/lib/python2.7/ssl.py", line 643, in read
+    v = self._sslobj.read(len)
+KeyboardInterrupt
